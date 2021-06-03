@@ -1,0 +1,109 @@
+{
+  "taskName": "fetch",
+  "config": {
+    "cloudquery": {
+      "connection": {
+        "dsn": ""
+      },
+      "provider": [
+        {
+          "aws": {
+            "source": "cloudquery/cq-provider-aws",
+            "version": "latest"
+          }
+        }
+      ]
+    },
+    "provider": [
+      {
+        "aws": {
+          "configuration": {
+            "regions": [
+              "eu-west-1"
+            ],
+            "aws_debug": false,
+            "max_retries": 20,
+            "max_backoff": 30
+          },
+          "resources": [
+            "accessanalyzer.analyzers",
+            "apigateway.api_keys",
+            "apigateway.client_certificates",
+            "apigateway.domain_names",
+            "apigateway.rest_apis",
+            "apigateway.usage_plans",
+            "apigateway.vpc_links",
+            "apigatewayv2.apis",
+            "apigatewayv2.domain_names",
+            "apigatewayv2.vpc_links",
+            "autoscaling.launch_configurations",
+            "cloudfront.cache_policies",
+            "cloudfront.distributions",
+            "cloudtrail.trails",
+            "cloudwatch.alarms",
+            "cloudwatchlogs.filters",
+            "config.configuration_recorders",
+            "config.conformance_packs",
+            "directconnect.gateways",
+            "directconnect.virtual_gateways",
+            "directconnect.virtual_interfaces",
+            "ec2.byoip_cidrs",
+            "ec2.customer_gateways",
+            "ec2.ebs_volumes",
+            "ec2.flow_logs",
+            "ec2.images",
+            "ec2.instances",
+            "ec2.internet_gateways",
+            "ec2.nat_gateways",
+            "ec2.network_acls",
+            "ec2.regional_config",
+            "ec2.route_tables",
+            "ec2.security_groups",
+            "ec2.subnets",
+            "ec2.transit_gateways",
+            "ec2.vpc_endpoints",
+            "ec2.vpc_peering_connections",
+            "ec2.vpcs",
+            "ecr.repositories",
+            "ecs.clusters",
+            "efs.filesystems",
+            "eks.clusters",
+            "elasticbeanstalk.environments",
+            "elbv1.load_balancers",
+            "elbv2.load_balancers",
+            "elbv2.target_groups",
+            "emr.clusters",
+            "fsx.backups",
+            "iam.accounts",
+            "iam.groups",
+            "iam.openid_connect_identity_providers",
+            "iam.password_policies",
+            "iam.policies",
+            "iam.roles",
+            "iam.saml_identity_providers",
+            "iam.server_certificates",
+            "iam.users",
+            "iam.virtual_mfa_devices",
+            "kms.keys",
+            "lambda.functions",
+            "lambda.layers",
+            "organizations.accounts",
+            "rds.certificates",
+            "rds.clusters",
+            "rds.db_subnet_groups",
+            "rds.instances",
+            "redshift.clusters",
+            "redshift.subnet_groups",
+            "route53.health_checks",
+            "route53.hosted_zones",
+            "route53.reusable_delegation_sets",
+            "route53.traffic_policies",
+            "s3.buckets",
+            "sns.subscriptions",
+            "sns.topics"
+          ]
+        }
+      }
+    ]
+  }
+}

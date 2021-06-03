@@ -1,0 +1,3 @@
+FROM ghcr.io/cloudquery/cloudquery:latest
+
+# Customize as you wish...
