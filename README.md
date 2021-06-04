@@ -51,39 +51,32 @@ module "cloudquery" {
 
   name = "cloudquery"
 
-  cidr             = "10.20.0.0/16"
-  azs              = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  public_subnets   = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
-  database_subnets = ["10.20.101.0/24", "10.20.102.0/24", "10.20.103.0/24"]
+  cidr            = "10.20.0.0/16"
+  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  public_subnets  = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
+  private_subnets = ["10.20.101.0/24", "10.20.102.0/24", "10.20.103.0/24"]
 }
 ```
 
 ### Run CloudQuery as a part of an existing AWS infrastructure (use existing VPC)
 
-This way allows integration with your existing AWS resources - VPC, public and database subnets. Specify the following arguments (see methods described above):
+This way allows integration with your existing AWS resources - VPC, public and private subnets. Specify the following arguments (see methods described above):
 
 ```
-vpc_id              = "vpc-1651acf1"
-public_subnet_ids   = ["subnet-1211eef5", "subnet-163466ab"]
-database_subnet_ids = ["subnet-1fe3d837", "subnet-129d66ab"]
+vpc_id                      = "vpc-1651acf1"
+public_subnet_ids           = ["subnet-1211eef5", "subnet-163466ab"]
+private_subnet_ids          = ["subnet-1fe3d837", "subnet-129d66ab"]
+private_subnets_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24"]
 ```
 
-If `vpc_id` is specified it will take precedence over `cidr` and existing VPC will be used. `database_subnet_ids` and `public_subnet_ids` must be specified also.
+If `vpc_id` is specified it will take precedence over `cidr` and existing VPC will be used.
 
 Make sure that both private and public subnets were created in the same set of availability zones.
 
 
 ## Known issues
 
-During creation of the infrastructure you can get such error:
-
-```
-Error: Provider produced inconsistent final plan
-│ 
-│ When expanding the plan for docker_registry_image.cloudquery[0] to include new values
-│ learned so far during apply, provider "registry.terraform.io/kreuzwerker/docker" produced an invalid new value for .build[0].context ...
-╵
-```
+During creation of the infrastructure you can get an error saying `Provider produced inconsistent final plan - When expanding the plan for docker_registry_image.cloudquery[0]`.
 
 The easiest solution is to rerun `terraform apply` one more time.
 

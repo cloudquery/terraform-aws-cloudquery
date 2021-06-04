@@ -49,8 +49,9 @@ module "cloudquery" {
   # Infrastructure (use existing VPC resources)
   ##############################################
 
-  #   vpc_id = "vpc-9651acf1"
-  #   public_subnet_ids = ["subnet-6fe3d837", "subnet-9211eef5", "subnet-e29d66ab"]
-  #   private_subnet_ids = ["subnet-6fe3d837", "subnet-9211eef5", "subnet-e29d66ab"]
+  #  vpc_id                      = "vpc-9651acf1"
+  #  public_subnet_ids           = ["subnet-6fe3d837", "subnet-9211eef5", "subnet-e29d66ab"]
+  #  private_subnet_ids          = ["subnet-6fe3d837", "subnet-9211eef5", "subnet-e29d66ab"]
+  #  private_subnets_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]
 
 }
