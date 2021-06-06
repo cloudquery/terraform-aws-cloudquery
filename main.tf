@@ -18,6 +18,7 @@ locals {
 ###################
 # VPC
 ###################
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 3.0"
@@ -40,6 +41,7 @@ module "vpc" {
 ###################
 # Security groups
 ###################
+
 module "lambda_sg" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "~> 4.0"
@@ -77,16 +79,15 @@ module "rds" {
   create_security_group = true
   allowed_cidr_blocks   = local.private_subnets_cidr_blocks
 
-  database_name          = "cloudquery"
-  username               = "cloudquery"
-  password               = random_password.master_password.result
-  create_random_password = false
-  replica_scale_enabled  = false
-  replica_count          = 0
-  storage_encrypted      = true
-  skip_final_snapshot    = true
-  apply_immediately      = true
-  enable_http_endpoint   = true
+  database_name = "cloudquery"
+  username      = "cloudquery"
+
+  replica_scale_enabled = false
+  replica_count         = 0
+  storage_encrypted     = true
+  skip_final_snapshot   = true
+  apply_immediately     = true
+  enable_http_endpoint  = true
 
   scaling_configuration = {
     auto_pause               = var.aurora_auto_pause
@@ -97,14 +98,10 @@ module "rds" {
   }
 }
 
-resource "random_password" "master_password" {
-  length  = 20
-  special = false
-}
-
 #########
 # Lambda
 #########
+
 module "lambda" {
   source  = "terraform-aws-modules/lambda/aws"
   version = "~> 2.0"
@@ -154,6 +151,7 @@ module "lambda" {
 ################################
 # EventBridge Rules and Targets
 ################################
+
 module "eventbridge" {
   source  = "terraform-aws-modules/eventbridge/aws"
   version = "~> 1.0"
