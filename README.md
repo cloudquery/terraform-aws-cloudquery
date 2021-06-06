@@ -1,6 +1,6 @@
-# Terraform module which runs CloudQuery on AWS Lambda
+# Terraform module which runs CloudQuery (fetch) on AWS Lambda
 
-[CloudQuery](https://www.cloudquery.io/) is tool to query your cloud assets & configuration with SQL. Solve compliance, security and cost challenges with standard SQL queries and relational tables.
+[CloudQuery](https://www.cloudquery.io/) is a tool to query your cloud assets & configuration with SQL. Solve compliance, security and cost challenges with standard SQL queries and relational tables.
 
 This repository contains Terraform infrastructure code which creates AWS resources required to run [CloudQuery](https://www.cloudquery.io/) on AWS, including:
 
@@ -8,16 +8,22 @@ This repository contains Terraform infrastructure code which creates AWS resourc
 - Aurora RDS serverless (version 1)
 - Lambda function created from ECR image
 - ECR repository where Docker Image is being copied from the official registry
-- AWS Parameter Store to keep secrets and access them from Lambda function
+
+After infrastructure creates, `cloudquery fetch` will be scheduled to execute periodically (eg, every hour, it is customizable via `cloudquery_fetch_schedule` variable).
+
+
+## Not supported (yet)
+
+- `cloudquery policy` is not possible to run in Lambda yet ([issue #121](https://github.com/cloudquery/cloudquery/issues/121))
 
 
 ## How to use this?
 
 There are three ways to get started with CloudQuery:
 
-1. [As a standalone project](https://github.com/cloudquery/terraform-aws-cloudquery#run-atlantis-as-a-standalone-project)
-1. [As a Terraform module](https://github.com/cloudquery/terraform-aws-cloudquery#run-atlantis-as-a-terraform-module)
-1. [As a part of an existing AWS infrastructure](https://github.com/cloudquerys/terraform-aws-cloudquery#run-atlantis-as-a-part-of-an-existing-aws-infrastructure-use-existing-vpc)
+1. [As a standalone project](https://github.com/cloudquery/terraform-aws-cloudquery#run-cloudquery-as-a-standalone-project)
+1. [As a Terraform module](https://github.com/cloudquery/terraform-aws-cloudquery#run-cloudquery-as-a-terraform-module)
+1. [As a part of an existing AWS infrastructure](https://github.com/cloudquerys/terraform-aws-cloudquery#run-cloudquery-as-a-part-of-an-existing-aws-infrastructure-use-existing-vpc)
 
 
 ### Run CloudQuery as a standalone project
@@ -35,7 +41,7 @@ $ cd cloudquery
 
 4. Run `terraform apply` to apply the Terraform configuration and create required infrastructure.
 
-5. Run `terraform output cq_dsn` to get the value of `CQ_DSN` environment value. Note: It is not possible to connect to RDS database in AWS from outside. See AWS documentation for various connectivity options.
+5. Run `terraform output cq_dsn` to get the value for `CQ_DSN` environment value (see [CLI overview](https://docs.cloudquery.io/cli/overview) in the official documentation). Note: It is not possible to connect to Amazon Aurora Serverless database instance from outside of the VPC directly. See [Amazon Aurora Serverless v1 documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html) and [this blog post](https://labrlearning.medium.com/interacting-with-aws-aurora-serverless-1398c9de329a) for various connectivity options.
 
 5. See official documentation on [https://docs.cloudquery.io/](https://docs.cloudquery.io/) for more details.
 
@@ -51,39 +57,43 @@ module "cloudquery" {
 
   name = "cloudquery"
 
-  cidr             = "10.20.0.0/16"
-  azs              = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
-  public_subnets   = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
-  database_subnets = ["10.20.101.0/24", "10.20.102.0/24", "10.20.103.0/24"]
+  cidr            = "10.20.0.0/16"
+  azs             = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+  public_subnets  = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
+  private_subnets = ["10.20.101.0/24", "10.20.102.0/24", "10.20.103.0/24"]
 }
 ```
 
 ### Run CloudQuery as a part of an existing AWS infrastructure (use existing VPC)
 
-This way allows integration with your existing AWS resources - VPC, public and database subnets. Specify the following arguments (see methods described above):
+This way allows integration with your existing AWS resources - VPC, public and private subnets. Specify the following arguments (see methods described above):
 
 ```
-vpc_id              = "vpc-1651acf1"
-public_subnet_ids   = ["subnet-1211eef5", "subnet-163466ab"]
-database_subnet_ids = ["subnet-1fe3d837", "subnet-129d66ab"]
+vpc_id                      = "vpc-1651acf1"
+public_subnet_ids           = ["subnet-1211eef5", "subnet-163466ab"]
+private_subnet_ids          = ["subnet-1fe3d837", "subnet-129d66ab"]
+private_subnets_cidr_blocks = ["10.0.0.0/24", "10.0.1.0/24"]
 ```
 
-If `vpc_id` is specified it will take precedence over `cidr` and existing VPC will be used. `database_subnet_ids` and `public_subnet_ids` must be specified also.
+If `vpc_id` is specified it will take precedence over `cidr` and existing VPC will be used.
 
 Make sure that both private and public subnets were created in the same set of availability zones.
 
 
+## How to connect to a database?
+
+It is not possible to connect to Aurora database from outside of VPC using just username and password.
+
+The easiest way to query database is using [Query Editor in AWS Console](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/query-editor.html). It is free to use.
+
+If you want to query database from an outside of the VPC using AWS CLI, you can use the [Data API](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/data-api.html#data-api.calling).
+
+See [this blog post](https://labrlearning.medium.com/interacting-with-aws-aurora-serverless-1398c9de329a) for various connectivity options.
+
+
 ## Known issues
 
-During creation of the infrastructure you can get such error:
-
-```
-Error: Provider produced inconsistent final plan
-│ 
-│ When expanding the plan for docker_registry_image.cloudquery[0] to include new values
-│ learned so far during apply, provider "registry.terraform.io/kreuzwerker/docker" produced an invalid new value for .build[0].context ...
-╵
-```
+During creation of the infrastructure you can get an error saying `Provider produced inconsistent final plan - When expanding the plan for docker_registry_image.cloudquery[0]`.
 
 The easiest solution is to rerun `terraform apply` one more time.
 
@@ -103,7 +113,7 @@ $ terraform apply
 ## Examples
 
 - [Complete CloudQuery example](https://github.com/cloudquery/terraform-aws-cloudquery/tree/main/examples/complete)
-- [Custom CloudQuery Docker Image example](https://github.com/cloudquery/terraform-aws-cloudquery/tree/main/examples/custom-image)
+- [Custom CloudQuery Docker Image example](https://github.com/cloudquery/terraform-aws-cloudquery/tree/main/examples/custom-image) shows how official Docker image can be extended with extra providers or other packages.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -123,7 +133,6 @@ $ terraform apply
 | <a name="provider_aws"></a> [aws](#provider\_aws) | >= 2.68 |
 | <a name="provider_docker"></a> [docker](#provider\_docker) | >= 2.8.0 |
 | <a name="provider_local"></a> [local](#provider\_local) | >= 2.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | >= 2.0 |
 
 ## Modules
 
@@ -142,7 +151,6 @@ $ terraform apply
 | [aws_ecr_repository.cloudquery](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository) | resource |
 | [docker_registry_image.cloudquery](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs/resources/registry_image) | resource |
 | [local_file.dockerfile](https://registry.terraform.io/providers/hashicorp/local/latest/docs/resources/file) | resource |
-| [random_password.master_password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_caller_identity.this](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_ecr_authorization_token.token](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecr_authorization_token) | data source |
 | [aws_ecr_repository.cloudquery](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ecr_repository) | data source |

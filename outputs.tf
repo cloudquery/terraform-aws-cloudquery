@@ -21,12 +21,6 @@ output "private_subnet_ids" {
   value       = local.private_subnet_ids
 }
 
-# Lambda invocation
-#output "fetch_result" {
-#  description = "Result of fetch command after creation"
-#  value       = try(jsondecode(data.aws_lambda_invocation.fetch_oncreate[0].result), "")
-#}
-
 # CloudQuery
 output "cq_dsn" {
   description = "CQ_DSN variable for CloudQuery CLI"
