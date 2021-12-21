@@ -75,7 +75,7 @@ variable "private_subnets" {
 variable "aurora_engine_version" {
   description = "Version of Amazon Aurora Postgres Serverless v1. Verify availability in your region here - https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.AuroraFeaturesRegionsDBEngines.grids.html#Concepts.Aurora_Fea_Regions_DB-eng.Feature.Serverless"
   type        = string
-  default     = "10.12"
+  default     = "13.4"
 }
 
 variable "aurora_auto_pause" {
@@ -106,7 +106,7 @@ variable "aurora_seconds_until_auto_pause" {
 variable "lambda_memory_size" {
   description = "Lambda function memory size"
   type        = number
-  default     = 1024
+  default     = 2048
 
   validation {
     condition     = can(var.lambda_memory_size > 128 && var.lambda_memory_size < 10240)
@@ -117,7 +117,7 @@ variable "lambda_memory_size" {
 variable "lambda_timeout" {
   description = "Lambda function timeout"
   type        = number
-  default     = 60
+  default     = 900
 
   validation {
     condition     = can(var.lambda_timeout > 0 && var.lambda_timeout < 900)
@@ -160,6 +160,6 @@ variable "cloudquery_version" {
 variable "cloudquery_fetch_schedule" {
   description = "Schedule to run cloudquery fetch command"
   type        = string
-  default     = "rate(1 hour)"
+  default     = "rate(5 hour)"
 }
 
