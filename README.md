@@ -39,11 +39,13 @@ $ cd cloudquery
 
 3. Run `terraform init` to download required providers and modules.
 
-4. Run `terraform apply` to apply the Terraform configuration and create required infrastructure.
+4. Make sure that you do not have a locally cached version of the Cloudquery image by running `docker image rm ghcr.io/cloudquery/cloudquery:latest`
 
-5. Run `terraform output cq_dsn` to get the value for `CQ_DSN` environment value (see [CLI overview](https://docs.cloudquery.io/cli/overview) in the official documentation). Note: It is not possible to connect to Amazon Aurora Serverless database instance from outside of the VPC directly. See [Amazon Aurora Serverless v1 documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html) and [this blog post](https://labrlearning.medium.com/interacting-with-aws-aurora-serverless-1398c9de329a) for various connectivity options.
+5. Run `terraform apply` to apply the Terraform configuration and create required infrastructure.
 
-5. See official documentation on [https://docs.cloudquery.io/](https://docs.cloudquery.io/) for more details.
+6. Run `terraform output cq_dsn` to get the value for `CQ_DSN` environment value (see [CLI overview](https://docs.cloudquery.io/cli/overview) in the official documentation). Note: It is not possible to connect to Amazon Aurora Serverless database instance from outside of the VPC directly. See [Amazon Aurora Serverless v1 documentation](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/aurora-serverless.html) and [this blog post](https://labrlearning.medium.com/interacting-with-aws-aurora-serverless-1398c9de329a) for various connectivity options.
+
+7. See official documentation on [https://docs.cloudquery.io/](https://docs.cloudquery.io/) for more details.
 
 
 ### Run CloudQuery as a Terraform module
