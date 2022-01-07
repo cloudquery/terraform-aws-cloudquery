@@ -33,3 +33,8 @@ terraform.rc
 
 # Temporary Dockerfile
 DockerfileTmp*
+
+# CloudQuery
+.cq
+config.hcl
+cloudquery.log
