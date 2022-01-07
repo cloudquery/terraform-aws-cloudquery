@@ -36,7 +36,7 @@ $ terraform apply
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cloudquery"></a> [cloudquery](#module\_cloudquery) | ../../ |  |
+| <a name="module_cloudquery"></a> [cloudquery](#module\_cloudquery) | ../../ | n/a |
 
 ## Resources
 
