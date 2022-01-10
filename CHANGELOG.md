@@ -14,13 +14,6 @@ All notable changes to this project will be documented in this file.
 
 All notable changes to this project will be documented in this file.
 
-<a name="unreleased"></a>
-## [Unreleased]
-
-
-- chore: update to latest versions of supported resources ([#3](https://github.com/cloudquery/terraform-aws-cloudquery/issues/3))
-
-
 <a name="v0.2.0"></a>
 ## [v0.2.0] - 2021-06-06
 
