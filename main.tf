@@ -172,7 +172,7 @@ module "eventbridge" {
         arn   = module.lambda.lambda_function_arn
         input = jsonencode({
           "taskName": "fetch",
-          "hcl": file("./tasks/config.hcl")
+          "hcl": file("${path.module}/tasks/config.hcl")
         })
       }
     ]
