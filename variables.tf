@@ -160,6 +160,6 @@ variable "cloudquery_version" {
 variable "cloudquery_fetch_schedule" {
   description = "Schedule to run cloudquery fetch command"
   type        = string
-  default     = "rate(5 hour)"
+  default     = "rate(5 hours)"
 }
 
