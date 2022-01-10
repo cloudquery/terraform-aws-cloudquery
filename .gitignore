@@ -36,5 +36,4 @@ DockerfileTmp*
 
 # CloudQuery
 .cq
-config.hcl
 cloudquery.log
