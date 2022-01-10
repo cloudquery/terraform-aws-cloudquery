@@ -170,7 +170,10 @@ module "eventbridge" {
       {
         name  = "fetch-using-config-file"
         arn   = module.lambda.lambda_function_arn
-        input = jsonencode(jsondecode(file("${path.module}/tasks/fetch.json")))
+        input = jsonencode({
+          "taskName": "fetch",
+          "hcl": file("${path.module}/tasks/config.hcl")
+        })
       }
     ]
   }
