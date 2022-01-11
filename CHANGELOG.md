@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.3.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.2.1...v0.3.0) (2022-01-11)
+
+
+### Features
+
+* Add Concurrency Control ([2510779](https://github.com/cloudquery/terraform-aws-cloudquery/commit/25107799d998a1963eb185c42111a8b6acf97cf1))
+
 ## [0.2.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.2.0...v0.2.1) (2022-01-10)
 
 
