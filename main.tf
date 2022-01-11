@@ -120,7 +120,7 @@ module "lambda" {
   vpc_subnet_ids         = local.private_subnet_ids
   vpc_security_group_ids = [module.lambda_sg.security_group_id]
   attach_network_policy  = true
-
+  reserved_concurrent_executions	= 1
   environment_variables = {
     CQ_DRIVER     = "postgresql"
     CQ_DSN        = local.cq_dsn
