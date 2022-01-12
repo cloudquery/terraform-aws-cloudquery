@@ -117,10 +117,10 @@ module "lambda" {
   memory_size   = var.lambda_memory_size
   timeout       = var.lambda_timeout
 
-  vpc_subnet_ids         = local.private_subnet_ids
-  vpc_security_group_ids = [module.lambda_sg.security_group_id]
-  attach_network_policy  = true
-  reserved_concurrent_executions	= 1
+  vpc_subnet_ids                 = local.private_subnet_ids
+  vpc_security_group_ids         = [module.lambda_sg.security_group_id]
+  attach_network_policy          = true
+  reserved_concurrent_executions = 1
   environment_variables = {
     CQ_DRIVER     = "postgresql"
     CQ_DSN        = local.cq_dsn
@@ -168,11 +168,11 @@ module "eventbridge" {
   targets = {
     cloudquery-fetch = [
       {
-        name  = "fetch-using-config-file"
-        arn   = module.lambda.lambda_function_arn
+        name = "fetch-using-config-file"
+        arn  = module.lambda.lambda_function_arn
         input = jsonencode({
-          "taskName": "fetch",
-          "hcl": file("${path.module}/tasks/config.hcl")
+          "taskName" : "fetch",
+          "hcl" : file("${path.module}/tasks/config.hcl")
         })
       }
     ]
