@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.3.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.3.0...v0.3.1) (2022-01-12)
+
+
+### Bug Fixes
+
+* Uncomment pre-commit hooks ([#15](https://github.com/cloudquery/terraform-aws-cloudquery/issues/15)) ([3ef7f10](https://github.com/cloudquery/terraform-aws-cloudquery/commit/3ef7f10623deab2e79a4f5f8a6ac38a523c95bc6))
+
 # [0.3.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.2.1...v0.3.0) (2022-01-11)
 
 
