@@ -163,20 +163,20 @@ $ terraform apply
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_aurora_auto_pause"></a> [aurora\_auto\_pause](#input\_aurora\_auto\_pause) | Whether to autopause Aurora database when there is no activity | `bool` | `true` | no |
-| <a name="input_aurora_engine_version"></a> [aurora\_engine\_version](#input\_aurora\_engine\_version) | Version of Amazon Aurora Postgres Serverless v1. Verify availability in your region here - https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.AuroraFeaturesRegionsDBEngines.grids.html#Concepts.Aurora_Fea_Regions_DB-eng.Feature.Serverless | `string` | `"10.12"` | no |
+| <a name="input_aurora_engine_version"></a> [aurora\_engine\_version](#input\_aurora\_engine\_version) | Version of Amazon Aurora Postgres Serverless v1. Verify availability in your region here - https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.AuroraFeaturesRegionsDBEngines.grids.html#Concepts.Aurora_Fea_Regions_DB-eng.Feature.Serverless | `string` | `"13.4"` | no |
 | <a name="input_aurora_max_capacity"></a> [aurora\_max\_capacity](#input\_aurora\_max\_capacity) | Maximum capacity for Aurora database | `number` | `4` | no |
 | <a name="input_aurora_min_capacity"></a> [aurora\_min\_capacity](#input\_aurora\_min\_capacity) | Minimum capacity for Aurora database | `number` | `2` | no |
 | <a name="input_aurora_seconds_until_auto_pause"></a> [aurora\_seconds\_until\_auto\_pause](#input\_aurora\_seconds\_until\_auto\_pause) | Number of seconds before autopause for Aurora database | `number` | `300` | no |
 | <a name="input_azs"></a> [azs](#input\_azs) | A list of availability zones in the region | `list(string)` | `[]` | no |
 | <a name="input_cidr"></a> [cidr](#input\_cidr) | The CIDR block for the VPC which will be created if `vpc_id` is not specified | `string` | `""` | no |
-| <a name="input_cloudquery_fetch_schedule"></a> [cloudquery\_fetch\_schedule](#input\_cloudquery\_fetch\_schedule) | Schedule to run cloudquery fetch command | `string` | `"rate(1 hour)"` | no |
+| <a name="input_cloudquery_fetch_schedule"></a> [cloudquery\_fetch\_schedule](#input\_cloudquery\_fetch\_schedule) | Schedule to run cloudquery fetch command | `string` | `"rate(5 hours)"` | no |
 | <a name="input_cloudquery_image"></a> [cloudquery\_image](#input\_cloudquery\_image) | CloudQuery Docker Image URI to deploy Lambda function from. If not specified, official CloudQuery image will be copied into ECR repository and used | `string` | `""` | no |
 | <a name="input_cloudquery_version"></a> [cloudquery\_version](#input\_cloudquery\_version) | Version of CloudQuery to run. If not specified latest will be used | `string` | `"latest"` | no |
 | <a name="input_create_ecr_repository"></a> [create\_ecr\_repository](#input\_create\_ecr\_repository) | Whether to create ECR repository or use an existing one | `bool` | `true` | no |
 | <a name="input_ecr_repository_name"></a> [ecr\_repository\_name](#input\_ecr\_repository\_name) | Name of ECR repository to create or use an existing one | `string` | `"cloudquery"` | no |
-| <a name="input_lambda_memory_size"></a> [lambda\_memory\_size](#input\_lambda\_memory\_size) | Lambda function memory size | `number` | `1024` | no |
+| <a name="input_lambda_memory_size"></a> [lambda\_memory\_size](#input\_lambda\_memory\_size) | Lambda function memory size | `number` | `2048` | no |
 | <a name="input_lambda_security_group_tags"></a> [lambda\_security\_group\_tags](#input\_lambda\_security\_group\_tags) | Additional tags to put on Lambda security group | `map(string)` | `{}` | no |
-| <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Lambda function timeout | `number` | `60` | no |
+| <a name="input_lambda_timeout"></a> [lambda\_timeout](#input\_lambda\_timeout) | Lambda function timeout | `number` | `900` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to use on all resources created (VPC, RDS, etc) | `string` | `"cloudquery"` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | A list of IDs of existing private subnets inside the VPC | `list(string)` | `[]` | no |
 | <a name="input_private_subnets"></a> [private\_subnets](#input\_private\_subnets) | A list of private subnets inside the VPC | `list(string)` | `[]` | no |
