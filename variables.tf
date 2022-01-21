@@ -75,7 +75,7 @@ variable "private_subnets" {
 variable "aurora_engine_version" {
   description = "Version of Amazon Aurora Postgres Serverless v1. Verify availability in your region here - https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/Concepts.AuroraFeaturesRegionsDBEngines.grids.html#Concepts.Aurora_Fea_Regions_DB-eng.Feature.Serverless"
   type        = string
-  default     = "13.4"
+  default     = "10.12"
 }
 
 variable "aurora_auto_pause" {
