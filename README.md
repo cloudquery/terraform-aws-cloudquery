@@ -1,3 +1,7 @@
+# Notice:
+
+Currently the advised way of deploying CloudQuery in production is via [cloudquery/helm-charts](https://github.com/cloudquery/helm-charts).
+
 # Terraform module which runs CloudQuery (fetch) on AWS Lambda
 
 [CloudQuery](https://www.cloudquery.io/) is a tool to query your cloud assets & configuration with SQL. Solve compliance, security and cost challenges with standard SQL queries and relational tables.
