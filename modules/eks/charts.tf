@@ -11,18 +11,31 @@ provider "helm" {
 }
 
 resource "helm_release" "cloudquery" {
-  for_each = toset(var.install_helm_chart ? ["cloudquery"] : [])
-  name             = "cloudquery"
+  for_each         = toset(var.install_helm_chart ? ["cloudquery"] : [])
+  name             = var.name
   namespace        = "cloudquery"
   repository       = "https://cloudquery.github.io/helm-charts"
   chart            = "cloudquery"
-  version          = "0.1.3"
+  version          = var.chart_version
   create_namespace = true
-  wait = true
+  wait             = true
 
   set {
     name  = "endRenderSecret.CQ_VAR_DSN"
     value = "postgres://${module.rds.db_instance_name}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}:${module.rds.db_instance_port}"
+  }
+
+  set {
+    name  = "config"
+    value = file(var.config_file)
+  }
+
+  dynamic "set" {
+    for_each = var.chart_variables
+    content {
+      name  = set.value["name"]
+      value = set.value["value"]
+    }
   }
 
   depends_on = [

@@ -10,11 +10,39 @@ variable "tags" {
   default     = {}
 }
 
+# Helm
+
 variable "install_helm_chart" {
   description = "Enable/Disable helm chart installation"
-  type        = true
+  type        = bool
   default     = false
 }
+
+variable "chart_version" {
+  description = "The version of CloudQuery helm chart"
+  type        = string
+  default     = "0.1.3"
+}
+
+# variable "chart_version" {
+#   description = "The version of CloudQuery helm chart"
+#   type        = string
+#   default     = "0.1.3"
+# }
+
+variable "config_file" {
+  description = "Path to the CloudQuery config.hcl"
+  type        = string
+  nullable    = false
+  default     = ""
+}
+
+variable "chart_variables" {
+  description = "Variables to pass to the helm chart"
+  type        = map(string)
+  default     = {}
+}
+
 
 # VPC
 variable "vpc_id" {
@@ -29,11 +57,11 @@ variable "public_subnet_ids" {
   default     = []
 }
 
-variable "private_subnet_ids" {
-  description = "A list of IDs of existing private subnets inside the VPC"
-  type        = list(string)
-  default     = []
-}
+# variable "private_subnet_ids" {
+#   description = "A list of IDs of existing private subnets inside the VPC"
+#   type        = list(string)
+#   default     = []
+# }
 
 variable "private_subnets_cidr_blocks" {
   description = "A list of CIDR blocks of private subnets inside the VPC to allow access to RDS database"

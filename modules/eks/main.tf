@@ -1,9 +1,9 @@
 locals {
-  # # VPC - existing or new?
-  # vpc_id                      = var.vpc_id == "" ? module.vpc.vpc_id : var.vpc_id
-  # public_subnet_ids           = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
+  # VPC - existing or new?
+  vpc_id            = var.vpc_id == "" ? module.vpc.vpc_id : var.vpc_id
+  public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
   # private_subnet_ids          = coalescelist(module.vpc.private_subnets, var.private_subnet_ids, [""])
-  # private_subnets_cidr_blocks = coalescelist(module.vpc.private_subnets_cidr_blocks, var.private_subnets_cidr_blocks, [""])
+  private_subnets_cidr_blocks = coalescelist(module.vpc.private_subnets_cidr_blocks, var.private_subnets_cidr_blocks, [""])
 
   # cq_dsn = "user=${module.rds.rds_cluster_master_username} password=${module.rds.rds_cluster_master_password} host=${module.rds.rds_cluster_endpoint} port=${module.rds.rds_cluster_port} dbname=${module.rds.rds_cluster_database_name}"
 
@@ -23,20 +23,20 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 3.0"
 
-  # create_vpc = var.vpc_id == ""
+  create_vpc = var.vpc_id == ""
 
   name = var.name
-  cidr            = var.cidr
+  cidr = var.cidr
 
-  azs             = var.azs
-  public_subnets  = var.public_subnets
-  private_subnets = var.private_subnets
+  azs              = var.azs
+  public_subnets   = var.public_subnets
+  private_subnets  = var.private_subnets
   database_subnets = var.database_subnets
 
   create_database_subnet_group       = true
   create_database_subnet_route_table = true
 
-  create_egress_only_igw          = true
+  create_egress_only_igw = true
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
@@ -59,7 +59,7 @@ module "security_group" {
 
   name        = var.name
   description = "CloudQuery RDS Security Group"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = local.vpc_id
 
   # ingress
   ingress_with_cidr_blocks = [
@@ -87,8 +87,8 @@ module "cluster_irsa" {
 
   oidc_providers = {
     main = {
-      provider_arn               = module.eks.oidc_provider_arn
-      // this expects namespace:service_account_name
+      provider_arn = module.eks.oidc_provider_arn
+      # this expects namespace:service_account_name
       namespace_service_accounts = ["cloudquery:cloudquery"]
     }
   }
@@ -101,7 +101,7 @@ module "cluster_irsa" {
 }
 
 module "eks" {
-  source = "terraform-aws-modules/eks/aws"
+  source  = "terraform-aws-modules/eks/aws"
   version = "~> 18.17.0"
 
   cluster_name                    = var.name
@@ -123,7 +123,7 @@ module "eks" {
     }
     kube-proxy = {}
     vpc-cni = {
-      resolve_conflicts        = "OVERWRITE"
+      resolve_conflicts = "OVERWRITE"
     }
   }
 
@@ -150,19 +150,19 @@ module "eks" {
       self        = true
     }
     egress_all = {
-      description      = "Node all egress"
-      protocol         = "-1"
-      from_port        = 0
-      to_port          = 0
-      type             = "egress"
-      cidr_blocks      = ["0.0.0.0/0"]
+      description = "Node all egress"
+      protocol    = "-1"
+      from_port   = 0
+      to_port     = 0
+      type        = "egress"
+      cidr_blocks = ["0.0.0.0/0"]
     }
   }
 
-  vpc_id     = module.vpc.vpc_id
-  subnet_ids = module.vpc.private_subnets
+  vpc_id     = local.vpc_id
+  subnet_ids = local.public_subnet_ids
 
-  // # EKS Managed Node Group(s)
+  # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
     ami_type               = "AL2_x86_64"
     disk_size              = 100
@@ -184,8 +184,8 @@ module "eks" {
       # so we need to disable it to use the default template provided by the AWS EKS managed node group service
       create_launch_template = false
       launch_template_name   = ""
-      max_size     = 1
-      desired_size = 1
+      max_size               = 1
+      desired_size           = 1
     }
 
     # Default node group - as provided by AWS EKS using Bottlerocket
@@ -212,25 +212,28 @@ module "rds" {
   version = "~> 4.2.0"
 
   identifier = var.name
-  
-  # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  engine            = "postgres"
-  engine_version    = var.postgres_engine_version
-  family = var.postgres_family
-  major_engine_version = var.postgres_major_engine_version
-  instance_class    = var.postgres_instance_class
 
-  allocated_storage = 20
+  # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
+  engine               = "postgres"
+  engine_version       = var.postgres_engine_version
+  family               = var.postgres_family
+  major_engine_version = var.postgres_major_engine_version
+  instance_class       = var.postgres_instance_class
+
+  allocated_storage     = 20
   max_allocated_storage = 100
 
-  db_name  = "cloudquery"
-  username = "cloudquery"
-  port     = "5432"
+  db_name                = "cloudquery"
+  username               = "cloudquery"
+  port                   = "5432"
   create_random_password = true
+
+  vpc_id = local.vpc_id
 
   multi_az               = true
   db_subnet_group_name   = module.vpc.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
+  allowed_cidr_blocks    = local.private_subnets_cidr_blocks
 
 
   maintenance_window              = "Sun:00:00-Sun:03:00"
