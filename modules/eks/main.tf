@@ -228,12 +228,9 @@ module "rds" {
   port                   = "5432"
   create_random_password = true
 
-  vpc_id = local.vpc_id
-
   multi_az               = true
   db_subnet_group_name   = module.vpc.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
-  allowed_cidr_blocks    = local.private_subnets_cidr_blocks
 
 
   maintenance_window              = "Sun:00:00-Sun:03:00"
