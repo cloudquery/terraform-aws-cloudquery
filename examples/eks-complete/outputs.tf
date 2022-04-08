@@ -15,7 +15,7 @@ output "public_subnet_ids" {
   value       = module.cloudquery.public_subnet_ids
 }
 
-output "private_subnet_ids" {
-  description = "IDs of the VPC private subnets that were created or passed in"
-  value       = module.cloudquery.private_subnet_ids
-}
+# output "private_subnet_ids" {
+#   description = "IDs of the VPC private subnets that were created or passed in"
+#   value       = module.cloudquery.private_subnet_ids
+# }

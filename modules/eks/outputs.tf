@@ -6,15 +6,15 @@ output "rds_cluster_master_password" {
 }
 
 # VPC
-# output "vpc_id" {
-#   description = "ID of the VPC that was created or passed in"
-#   value       = local.vpc_id
-# }
+output "vpc_id" {
+  description = "ID of the VPC that was created or passed in"
+  value       = local.vpc_id
+}
 
-# output "public_subnet_ids" {
-#   description = "IDs of the VPC public subnets that were created or passed in"
-#   value       = local.public_subnet_ids
-# }
+output "public_subnet_ids" {
+  description = "IDs of the VPC public subnets that were created or passed in"
+  value       = local.public_subnet_ids
+}
 
 # output "private_subnet_ids" {
 #   description = "IDs of the VPC private subnets that were created or passed in"
