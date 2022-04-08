@@ -13,7 +13,7 @@ data "aws_availability_zones" "available" {}
 ##############################################################
 
 module "cloudquery" {
-  source = "../../modules/eks"
+  source = "../../modules/lambda"
 
   # Name to use on all resources created (VPC, RDS, etc)
   name = "cloudquery"
