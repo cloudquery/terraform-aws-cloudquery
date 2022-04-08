@@ -3,7 +3,7 @@ locals {
   vpc_id            = var.vpc_id == "" ? module.vpc.vpc_id : var.vpc_id
   public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
   # private_subnet_ids          = coalescelist(module.vpc.private_subnets, var.private_subnet_ids, [""])
-  private_subnets_cidr_blocks = coalescelist(module.vpc.private_subnets_cidr_blocks, var.private_subnets_cidr_blocks, [""])
+  # private_subnets_cidr_blocks = coalescelist(module.vpc.private_subnets_cidr_blocks, var.private_subnets_cidr_blocks, [""])
 
   # cq_dsn = "user=${module.rds.rds_cluster_master_username} password=${module.rds.rds_cluster_master_password} host=${module.rds.rds_cluster_endpoint} port=${module.rds.rds_cluster_port} dbname=${module.rds.rds_cluster_database_name}"
 

@@ -63,11 +63,11 @@ variable "public_subnet_ids" {
 #   default     = []
 # }
 
-variable "private_subnets_cidr_blocks" {
-  description = "A list of CIDR blocks of private subnets inside the VPC to allow access to RDS database"
-  type        = list(string)
-  default     = []
-}
+# variable "private_subnets_cidr_blocks" {
+#   description = "A list of CIDR blocks of private subnets inside the VPC to allow access to RDS database"
+#   type        = list(string)
+#   default     = []
+# }
 
 variable "cidr" {
   description = "The CIDR block for the VPC which will be created if `vpc_id` is not specified"
