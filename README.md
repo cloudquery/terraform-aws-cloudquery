@@ -5,7 +5,7 @@
 This repository contains Terraform infrastructure code which creates resources required to run [CloudQuery](https://www.cloudquery.io/), including:
 
 - [AWS EKS + RDS](./modules/eks/README.md)
-- [AWS lambda (serveless)](./modules/lambda/README.md) - now deprecated
+- [AWS Lambda (serverless)](./modules/lambda/README.md) - now deprecated
 
 
 ## Authors
