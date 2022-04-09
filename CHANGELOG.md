@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.4.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.3.1...v0.4.0) (2022-04-09)
+
+
+### Features
+
+* Restructure to multi modules ([#18](https://github.com/cloudquery/terraform-aws-cloudquery/issues/18)) ([590b611](https://github.com/cloudquery/terraform-aws-cloudquery/commit/590b611f7dc8ac8863b5c94115bc7c37cac5a760))
+
 ## [0.3.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.3.0...v0.3.1) (2022-01-12)
 
 
