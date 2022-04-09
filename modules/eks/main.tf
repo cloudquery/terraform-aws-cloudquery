@@ -5,7 +5,7 @@ locals {
   # private_subnet_ids          = coalescelist(module.vpc.private_subnets, var.private_subnet_ids, [""])
   # private_subnets_cidr_blocks = coalescelist(module.vpc.private_subnets_cidr_blocks, var.private_subnets_cidr_blocks, [""])
 
-  # cq_dsn = "user=${module.rds.rds_cluster_master_username} password=${module.rds.rds_cluster_master_password} host=${module.rds.rds_cluster_endpoint} port=${module.rds.rds_cluster_port} dbname=${module.rds.rds_cluster_database_name}"
+  # cq_dsn = "postgres://${module.rds.rds_cluster_master_username}:${module.rds.rds_cluster_master_password}@${module.rds.rds_cluster_endpoint}:${module.rds.rds_cluster_port}/${module.rds.rds_cluster_database_name}"
 
   tags = merge(
     {

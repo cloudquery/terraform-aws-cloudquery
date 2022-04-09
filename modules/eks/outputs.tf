@@ -21,8 +21,19 @@ output "public_subnet_ids" {
 #   value       = local.private_subnet_ids
 # }
 
+# EKS
+output "irsa_arn" {
+  description = "ARN of IRSA - (IAM Role for service account)"
+  value       = module.cluster_irsa.iam_role_arn
+}
+
+output "irsa_name" {
+  description = "Name of IRSA - (IAM Role for service account)"
+  value       = module.cluster_irsa.iam_role_name
+}
+
 # CloudQuery
-# output "cq_dsn" {
-#   description = "CQ_DSN variable for CloudQuery CLI"
-#   value       = nonsensitive(local.cq_dsn)
-# }
+output "cq_dsn" {
+  description = "CQ_DSN variable for CloudQuery CLI"
+  value       = nonsensitive("postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}")
+}
