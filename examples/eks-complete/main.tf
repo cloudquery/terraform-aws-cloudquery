@@ -1,5 +1,5 @@
 provider "aws" {
-  region = "eu-west-1"
+  region = "eu-east-1"
 }
 
 locals {
@@ -13,7 +13,7 @@ data "aws_availability_zones" "available" {}
 ##############################################################
 
 module "cloudquery" {
-  source = "../../"
+  source = "../../modules/eks"
 
   # Name to use on all resources created (VPC, RDS, etc)
   name = "cloudquery"
