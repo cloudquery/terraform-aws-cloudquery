@@ -2,7 +2,7 @@
 output "rds_cluster_master_password" {
   description = "Master password for cloudquery aurora database"
   value       = module.cloudquery.rds_cluster_master_password
-  sensitive = true
+  sensitive   = true
 }
 
 # VPC
