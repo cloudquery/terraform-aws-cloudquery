@@ -4,7 +4,7 @@ locals {
   # if vpc_id is null, use public_subnet from vpc module Otherwise ask the user for public_subnet_ids in addition to vpc_id
   public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
   # Default CIDR for the VPC to be created if vpc_id is not provided
-  cidr = "10.10.0.0/16"
+  # cidr = "10.10.0.0/16"
   # cq_dsn = "postgres://${module.rds.rds_cluster_master_username}:${module.rds.rds_cluster_master_password}@${module.rds.rds_cluster_endpoint}:${module.rds.rds_cluster_port}/${module.rds.rds_cluster_database_name}"
 
   tags = merge(
