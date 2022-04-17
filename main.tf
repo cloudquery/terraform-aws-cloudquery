@@ -1,6 +1,6 @@
 locals {
   # VPC - existing or new?
-  vpc_id            = var.vpc_id == null ? module.vpc.vpc_id : var.vpc_id
+  vpc_id = var.vpc_id == null ? module.vpc.vpc_id : var.vpc_id
   # if vpc_id is null, use public_subnet from vpc module Otherwise ask the user for public_subnet_ids in addition to vpc_id
   public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
   # Default CIDR for the VPC to be created if vpc_id is not provided
@@ -36,10 +36,10 @@ module "vpc" {
 
   name = var.name
 
-  cidr = "10.10.0.0/16"
-  azs = [for v in slice(data.aws_availability_zones.available.names, 0, 2) : v]
-  public_subnets = ["10.10.1.0/24", "10.10.2.0/24"]
-  private_subnets = ["10.10.11.0/24", "10.10.12.0/24"]
+  cidr             = "10.10.0.0/16"
+  azs              = [for v in slice(data.aws_availability_zones.available.names, 0, 2) : v]
+  public_subnets   = ["10.10.1.0/24", "10.10.2.0/24"]
+  private_subnets  = ["10.10.11.0/24", "10.10.12.0/24"]
   database_subnets = ["10.10.21.0/24", "10.10.22.0/24"]
 
   # cidr = local.cidr
@@ -219,14 +219,14 @@ module "eks" {
 
 
 resource "aws_secretsmanager_secret" "cloudquery_secret" {
-  name = "${var.name}"
+  name                    = var.name
   recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
   secret_id = aws_secretsmanager_secret.cloudquery_secret.id
   secret_string = jsonencode({
-    "CQ_VAR_DSN": "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}",
+    "CQ_VAR_DSN" : "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}",
   })
 }
 

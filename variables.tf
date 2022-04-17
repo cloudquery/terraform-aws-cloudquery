@@ -47,7 +47,7 @@ variable "chart_values" {
 variable "vpc_id" {
   description = "ID of an existing VPC where resources will be created"
   type        = string
-  default = null
+  default     = null
 }
 
 variable "public_subnet_ids" {
@@ -86,7 +86,7 @@ variable "postgres_instance_class" {
 variable "role_policy_arns" {
   description = "Policies for the role to use for the EKS service account"
   type        = list(string)
-  default     = [
+  default = [
     "arn:aws:iam::aws:policy/ReadOnlyAccess"
   ]
 }

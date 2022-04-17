@@ -20,7 +20,7 @@ resource "helm_release" "cloudquery" {
   create_namespace = true
   wait             = true
   values = [
-<<EOT
+    <<EOT
 serviceAccount:
   enabled: true
   annotations:
@@ -31,9 +31,9 @@ ascp:
 config: |
   ${indent(2, file(var.config_file))}
 EOT
-,
-  var.chart_values
-]
+    ,
+    var.chart_values
+  ]
 
   depends_on = [
     module.eks.cluster_id,
