@@ -2,6 +2,10 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
+local {
+  ascpSecrets = lookup(lookup(var.chart_variables, "ascp", {}), "secrets", [])
+}
+
 provider "helm" {
   kubernetes {
     host                   = module.eks.cluster_endpoint
@@ -19,16 +23,24 @@ resource "helm_release" "cloudquery" {
   version          = var.chart_version
   create_namespace = true
   wait             = true
-
-  set {
-    name  = "endRenderSecret.CQ_VAR_DSN"
-    value = "postgres://${module.rds.db_instance_name}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}:${module.rds.db_instance_port}"
-  }
-
-  set {
-    name  = "config"
-    value = file(var.config_file)
-  }
+  values = [
+<<EOT
+serviceAccount:
+  enabled: true
+  annotations:
+    "eks.amazonaws.com/role-arn": ${module.cluster_irsa.iam_role_arn}
+ascp:
+  enabled: true
+  secrets: ["CQ_VAR_DSN", ${join(",", local.ascpSecrets)}]
+config: |
+  ${indent(2, file(var.config_file))}
+EOT
+,
+  ]
+  # set {
+  #   name  = "config"
+  #   value = file(var.config_file)
+  # }
 
   dynamic "set" {
     for_each = var.chart_variables

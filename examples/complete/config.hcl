@@ -8,7 +8,7 @@ cloudquery {
   }
 
   connection {
-    dsn = ${DSN}
+    dsn = "${CQ_VAR_DSN}"
   }
 }
 
@@ -38,5 +38,3 @@ provider "aws" {
     "*"
   ]
 }
-
-

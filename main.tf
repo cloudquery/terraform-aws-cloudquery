@@ -1,10 +1,10 @@
 locals {
   # VPC - existing or new?
-  vpc_id            = var.vpc_id == "" ? module.vpc.vpc_id : var.vpc_id
+  vpc_id            = var.vpc_id == null ? module.vpc.vpc_id : var.vpc_id
+  # if vpc_id is null, use public_subnet from vpc module Otherwise ask the user for public_subnet_ids in addition to vpc_id
   public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
-  # private_subnet_ids          = coalescelist(module.vpc.private_subnets, var.private_subnet_ids, [""])
-  # private_subnets_cidr_blocks = coalescelist(module.vpc.private_subnets_cidr_blocks, var.private_subnets_cidr_blocks, [""])
-
+  # Default CIDR for the VPC to be created if vpc_id is not provided
+  cidr = "10.10.0.0/16"
   # cq_dsn = "postgres://${module.rds.rds_cluster_master_username}:${module.rds.rds_cluster_master_password}@${module.rds.rds_cluster_endpoint}:${module.rds.rds_cluster_port}/${module.rds.rds_cluster_database_name}"
 
   tags = merge(
@@ -19,19 +19,36 @@ locals {
 # VPC
 ###################
 
+data "aws_availability_zones" "available" {}
+
+data "aws_vpc" "cq_vpc" {
+  id = local.vpc_id
+  depends_on = [
+    module.vpc
+  ]
+}
+
 module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "~> 3.0"
 
-  create_vpc = var.vpc_id == ""
+  create_vpc = var.vpc_id == null
 
   name = var.name
-  cidr = var.cidr
 
-  azs              = var.azs
-  public_subnets   = var.public_subnets
-  private_subnets  = var.private_subnets
-  database_subnets = var.database_subnets
+  cidr = "10.10.0.0/16"
+  azs = ["us-east-1a", "us-east-1b"]
+  public_subnets = ["10.10.1.0/24", "10.10.2.0/24"]
+  private_subnets = ["10.10.11.0/24", "10.10.12.0/24"]
+  database_subnets = ["10.10.21.0/24", "10.10.22.0/24"]
+
+  # cidr = local.cidr
+  # If we are creating vpc use all the available zones. If a user wants to control the vpc
+  # he needs to create the VPC outside the module and configure it.
+  # azs = [for v in slice(data.aws_availability_zones.available.names, 0, 2) : v]
+  # public_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k)]
+  # private_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 10)]
+  # database_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 20)]
 
   create_database_subnet_group       = true
   create_database_subnet_route_table = true
@@ -83,19 +100,17 @@ module "cluster_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
   version = "~> 4.18"
 
-  role_name = "cloudquery-eksa-irsa"
+  role_name = "${var.name}-eksa-irsa"
 
   oidc_providers = {
     main = {
       provider_arn = module.eks.oidc_provider_arn
       # this expects namespace:service_account_name
-      namespace_service_accounts = ["cloudquery:cloudquery"]
+      namespace_service_accounts = ["cloudquery:${var.name}"]
     }
   }
 
-  role_policy_arns = [
-    "arn:aws:iam::aws:policy/ReadOnlyAccess"
-  ]
+  role_policy_arns = var.role_policy_arns
 
   tags = local.tags
 }
@@ -203,6 +218,46 @@ module "eks" {
 }
 
 
+resource "aws_secretsmanager_secret" "cloudquery_secret" {
+  name = "${var.name}"
+  recovery_window_in_days = 0
+}
+
+resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
+  secret_id = aws_secretsmanager_secret.cloudquery_secret.id
+  secret_string = jsonencode({
+    "CQ_VAR_DSN": "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}",
+  })
+}
+
+
+module "iam_policy" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
+  version = "~> 4"
+
+  name        = "${var.name}-secretsmanager"
+  path        = "/"
+  description = "Access to CloudQuery secrets in AWS secret manager"
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": ["secretsmanager:GetSecretValue", "secretsmanager:DescribeSecret"],
+      "Effect": "Allow",
+      "Resource": "${aws_secretsmanager_secret_version.cloudquery_secret_version.arn}"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy_attachment" "irsa" {
+  role       = module.cluster_irsa.iam_role_name
+  policy_arn = module.iam_policy.arn
+}
+
 ######
 # RDS
 ######
@@ -246,7 +301,7 @@ module "rds" {
   performance_insights_retention_period = 7
   create_monitoring_role                = true
   monitoring_interval                   = 60
-  monitoring_role_name                  = "cloudquery-monitoring"
+  monitoring_role_name                  = "${var.name}-monitoring"
   monitoring_role_description           = "Monitoring CloudQuery RDS"
 
   parameters = [

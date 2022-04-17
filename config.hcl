@@ -8,7 +8,7 @@ cloudquery {
   }
 
   connection {
-    dsn = ${DSN}
+    dsn = file("/mnt/secrets-store/cloudquery_rds_creds")
   }
 }
 
