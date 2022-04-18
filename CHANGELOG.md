@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.5.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.4.0...v0.5.0) (2022-04-18)
+
+
+### Features
+
+* Deprecate lambda + support latest helm charts ([#19](https://github.com/cloudquery/terraform-aws-cloudquery/issues/19)) ([f046c1a](https://github.com/cloudquery/terraform-aws-cloudquery/commit/f046c1a5ff2c9e0c28eedbe0cbc91eb59f520574))
+
 # [0.4.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.3.1...v0.4.0) (2022-04-09)
 
 
