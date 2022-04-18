@@ -12,6 +12,6 @@ module "cloudquery" {
   # Name to use on all resources created (VPC, RDS, etc)
   name = "cloudquery-complete-example"
 
-  config_file = "${path.cwd}/config.hcl"
+  config_file = "config.hcl"
   # install_helm_chart = true
 }
