@@ -24,9 +24,6 @@ data "aws_availability_zones" "available" {}
 
 data "aws_vpc" "cq_vpc" {
   id = local.vpc_id
-  depends_on = [
-    module.vpc
-  ]
 }
 
 module "vpc" {
@@ -252,11 +249,6 @@ module "iam_policy" {
   ]
 }
 EOF
-}
-
-resource "aws_iam_role_policy_attachment" "irsa" {
-  role       = module.cluster_irsa.iam_role_name
-  policy_arn = module.iam_policy.arn
 }
 
 ######
