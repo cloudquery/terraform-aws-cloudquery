@@ -56,6 +56,12 @@ variable "public_subnet_ids" {
   default     = []
 }
 
+variable "database_subnet_group" {
+  description = "If vpc_id is specified, path the subnet_group name where the RDS should reside"
+  type        = string
+  default     = ""
+}
+
 # RDS
 variable "postgres_engine_version" {
   description = "Version of Amazon RDS Postgres engine to use"

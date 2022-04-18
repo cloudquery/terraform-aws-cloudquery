@@ -3,9 +3,10 @@ locals {
   vpc_id = var.vpc_id == null ? module.vpc.vpc_id : var.vpc_id
   # if vpc_id is null, use public_subnet from vpc module Otherwise ask the user for public_subnet_ids in addition to vpc_id
   public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
+  # if vpc_id is null, use database_subnet_group from vpc module Otherwise ask the user for database_subnet_group in addition to vpc_id
+  database_subnet_group = var.database_subnet_group == "" ? module.vpc.database_subnet_group : var.database_subnet_group  
   # Default CIDR for the VPC to be created if vpc_id is not provided
   # cidr = "10.10.0.0/16"
-  # cq_dsn = "postgres://${module.rds.rds_cluster_master_username}:${module.rds.rds_cluster_master_password}@${module.rds.rds_cluster_endpoint}:${module.rds.rds_cluster_port}/${module.rds.rds_cluster_database_name}"
 
   tags = merge(
     {
@@ -85,7 +86,7 @@ module "security_group" {
       to_port     = 5432
       protocol    = "tcp"
       description = "PostgreSQL access from within VPC"
-      cidr_blocks = module.vpc.vpc_cidr_block
+      cidr_blocks = data.aws_vpc.cq_vpc.cidr_block
     },
   ]
 
@@ -284,7 +285,7 @@ module "rds" {
   create_random_password = true
 
   multi_az               = true
-  db_subnet_group_name   = module.vpc.database_subnet_group
+  db_subnet_group_name   = local.database_subnet_group
   vpc_security_group_ids = [module.security_group.security_group_id]
 
 
