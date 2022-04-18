@@ -111,7 +111,7 @@ module "cluster_irsa" {
     }
   }
 
-  role_policy_arns = var.role_policy_arns
+  role_policy_arns = compact(concat(var.role_policy_arns, [module.iam_policy.arn]))
 
   tags = local.tags
 }
