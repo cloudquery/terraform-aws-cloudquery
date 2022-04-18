@@ -11,16 +11,6 @@ output "vpc_id" {
   value       = local.vpc_id
 }
 
-output "public_subnet_ids" {
-  description = "IDs of the VPC public subnets that were created or passed in"
-  value       = local.public_subnet_ids
-}
-
-# output "private_subnet_ids" {
-#   description = "IDs of the VPC private subnets that were created or passed in"
-#   value       = local.private_subnet_ids
-# }
-
 # EKS
 output "irsa_arn" {
   description = "ARN of IRSA - (IAM Role for service account)"

@@ -8,7 +8,7 @@ cloudquery {
   }
 
   connection {
-    dsn = ${DSN}
+    dsn = "${DSN}"
   }
 }
 
