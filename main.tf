@@ -4,7 +4,7 @@ locals {
   # if vpc_id is null, use public_subnet from vpc module Otherwise ask the user for public_subnet_ids in addition to vpc_id
   public_subnet_ids = coalescelist(module.vpc.public_subnets, var.public_subnet_ids, [""])
   # if vpc_id is null, use database_subnet_group from vpc module Otherwise ask the user for database_subnet_group in addition to vpc_id
-  database_subnet_group = var.database_subnet_group == "" ? module.vpc.database_subnet_group : var.database_subnet_group  
+  database_subnet_group = var.database_subnet_group == "" ? module.vpc.database_subnet_group : var.database_subnet_group
   # Default CIDR for the VPC to be created if vpc_id is not provided
   # cidr = "10.10.0.0/16"
 
