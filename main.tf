@@ -96,7 +96,7 @@ module "security_group" {
 
 module "cluster_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 4.18"
+  version = "~> 4.20"
 
   role_name = "${var.name}-eksa-irsa"
 
@@ -108,9 +108,16 @@ module "cluster_irsa" {
     }
   }
 
-  role_policy_arns = compact(concat(var.role_policy_arns, [module.iam_policy.arn]))
-
+  role_policy_arns = var.role_policy_arns
   tags = local.tags
+  depends_on = [
+    module.iam_policy
+  ]
+}
+
+resource "aws_iam_role_policy_attachment" "irsa" {
+  role       = module.cluster_irsa.iam_role_name
+  policy_arn = module.iam_policy.arn
 }
 
 module "eks" {
