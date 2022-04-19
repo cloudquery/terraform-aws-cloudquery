@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.5.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.5.0...v0.5.1) (2022-04-19)
+
+
+### Bug Fixes
+
+* Field role_policy_arns is buggy ([bc42dcf](https://github.com/cloudquery/terraform-aws-cloudquery/commit/bc42dcf021fa592602907470c56e965085078825))
+
 # [0.5.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.4.0...v0.5.0) (2022-04-18)
 
 
