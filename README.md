@@ -9,7 +9,7 @@ Examples are included in the example folder, but simple usage is as follows:
 ```hcl
 module "cloudquery" {
   source = "cloudquery/cloudquery/aws"
-  version = "~> 0.4"
+  version = "~> 0.5"
 
   name = "cloudquery"
 
