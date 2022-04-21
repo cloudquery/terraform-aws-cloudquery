@@ -96,3 +96,9 @@ variable "role_policy_arns" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess"
   ]
 }
+
+variable "cloudwatch_enabled" {
+  description = "Enabled cloudwatch logs from cloudquery pods via fluentd-bit"
+  type        = bool
+  default = true
+}
