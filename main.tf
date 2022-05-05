@@ -48,14 +48,14 @@ module "vpc" {
   # private_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 10)]
   # database_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 20)]
 
-  create_database_subnet_group       = true
-  create_database_subnet_route_table = true
+  create_database_subnet_group       = false
+  # create_database_subnet_route_table = true
 
-  create_egress_only_igw = true
+  # create_egress_only_igw = true
 
-  enable_nat_gateway   = true
-  single_nat_gateway   = true
-  enable_dns_hostnames = true
+  # enable_nat_gateway   = true
+  # single_nat_gateway   = true
+  # enable_dns_hostnames = true
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_iam_role  = true
@@ -74,6 +74,29 @@ module "security_group" {
 
   name        = var.name
   description = "CloudQuery RDS Security Group"
+  vpc_id      = local.vpc_id
+
+  # ingress
+  ingress_with_cidr_blocks = [
+    {
+      from_port   = 5432
+      to_port     = 5432
+      protocol    = "tcp"
+      description = "PostgreSQL access from within VPC"
+      cidr_blocks = data.aws_vpc.cq_vpc.cidr_block
+    },
+  ]
+
+  tags = local.tags
+}
+
+// https://dev.to/aws-builders/connect-quicksight-to-rds-in-a-private-vpc-4nl9
+module "security_group" {
+  source  = "terraform-aws-modules/security-group/aws"
+  version = "~> 4.2"
+
+  name        = "${var.name}-quicksight-access"
+  description = "CloudQuery RDS QuickSight access Security Group"
   vpc_id      = local.vpc_id
 
   # ingress
@@ -231,7 +254,8 @@ resource "aws_secretsmanager_secret" "cloudquery_secret" {
 resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
   secret_id = aws_secretsmanager_secret.cloudquery_secret.id
   secret_string = jsonencode({
-    "CQ_VAR_DSN" : "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}",
+    "CQ_VAR_DSN" : module.rds.cluster_endpoint,
+    "CQ_RDS_PASSWORD": module.rds.cluster_master_password,
   })
 }
 
@@ -262,58 +286,50 @@ EOF
 # RDS
 ######
 
+data "aws_rds_engine_version" "postgresql" {
+  engine  = "aurora-postgresql"
+  version = "13.6"
+}
+
 module "rds" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "~> 4.2.0"
+  source  = "terraform-aws-modules/rds-aurora/aws"
+  version = "~> 7.1.0"
 
-  identifier = var.name
+  name = var.name
+  engine            = data.aws_rds_engine_version.postgresql.engine
+  engine_mode       = "provisioned"
+  engine_version    = data.aws_rds_engine_version.postgresql.version
+  storage_encrypted = true
+  database_name = "postgres"
+  
+  vpc_id                = module.vpc.vpc_id
+  subnets               = module.vpc.database_subnets
+  create_security_group = true
+  allowed_cidr_blocks   = module.vpc.private_subnets_cidr_blocks
 
-  # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  engine               = "postgres"
-  engine_version       = var.postgres_engine_version
-  family               = var.postgres_family
-  major_engine_version = var.postgres_major_engine_version
-  instance_class       = var.postgres_instance_class
+  serverlessv2_scaling_configuration = {
+    min_capacity = 2
+    max_capacity = 10
+  }
 
-  allocated_storage     = 20
-  max_allocated_storage = 100
-
-  db_name                = "cloudquery"
-  username               = "cloudquery"
-  port                   = "5432"
-  create_random_password = true
-
-  multi_az               = true
-  db_subnet_group_name   = local.database_subnet_group
-  vpc_security_group_ids = [module.security_group.security_group_id]
-
-
-  maintenance_window              = "Sun:00:00-Sun:03:00"
-  backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  create_cloudwatch_log_group     = true
-
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
-
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
-  create_monitoring_role                = true
-  monitoring_interval                   = 60
-  monitoring_role_name                  = "${var.name}-monitoring"
-  monitoring_role_description           = "Monitoring CloudQuery RDS"
-
-  parameters = [
-    {
-      name  = "autovacuum"
-      value = 1
-    },
-    {
-      name  = "client_encoding"
-      value = "utf8"
-    }
-  ]
+  instance_class = "db.serverless"
+  instances = {
+    one = {}
+  }
 
   tags = var.tags
+}
+
+resource "aws_db_parameter_group" "example_postgresql13" {
+  name        = "${var.name}-aurora-db-postgres13-parameter-group"
+  family      = "aurora-postgresql13"
+  description = "${var.name}-aurora-db-postgres13-parameter-group"
+  tags        = local.tags
+}
+
+resource "aws_rds_cluster_parameter_group" "example_postgresql13" {
+  name        = "${var.name}-aurora-postgres13-cluster-parameter-group"
+  family      = "aurora-postgresql13"
+  description = "${var.name}-aurora-postgres13-cluster-parameter-group"
+  tags        = local.tags
 }

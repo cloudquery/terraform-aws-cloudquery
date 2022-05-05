@@ -62,30 +62,6 @@ variable "database_subnet_group" {
   default     = ""
 }
 
-# RDS
-variable "postgres_engine_version" {
-  description = "Version of Amazon RDS Postgres engine to use"
-  type        = string
-  default     = "14.2"
-}
-
-variable "postgres_family" {
-  description = "Family of Amazon RDS Postgres engine to use"
-  type        = string
-  default     = "postgres14"
-}
-
-variable "postgres_major_engine_version" {
-  description = "Major version of Amazon RDS Postgres engine to use"
-  type        = string
-  default     = "14"
-}
-
-variable "postgres_instance_class" {
-  description = "Postgresql Instance Class"
-  type        = string
-  default     = "db.t4g.large"
-}
 
 # EKS
 # role_policy_arns
