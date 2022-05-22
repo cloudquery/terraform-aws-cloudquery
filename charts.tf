@@ -25,9 +25,8 @@ serviceAccount:
   enabled: true
   annotations:
     "eks.amazonaws.com/role-arn": ${module.cluster_irsa.iam_role_arn}
-ascp:
-  enabled: true
-  secrets: ["CQ_VAR_DSN"]
+envRenderSecret:
+  "CQ_VAR_DSN": "${data.aws_secretsmanager_secret_version.cloudquery_secret_version.secret_string}"
 config: |
   ${indent(2, file(var.config_file))}
 EOT

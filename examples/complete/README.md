@@ -14,6 +14,9 @@ helm get notes cloudquery-complete-example --namespace cloudquery
 # exec into cloudquery-admin pod
 kubectl exec -it deployment/cloudquery-complete-example-admin -n cloudquery -- /bin/sh
 
+# kickoff cronjob
+kubectl create job --from=cronjob/cloudquery-complete-example-cron cloudquery-complete-example-cron -n cloudquery
+
 # uninstall cloudquery
 helm uninstall cloudquery-complete-example -n cloudquery
 ```

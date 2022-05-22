@@ -21,7 +21,7 @@ variable "install_helm_chart" {
 variable "chart_version" {
   description = "The version of CloudQuery helm chart"
   type        = string
-  default     = "0.1.10"
+  default     = "0.2.1"
 }
 
 # variable "chart_version" {
