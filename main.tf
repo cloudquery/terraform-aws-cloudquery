@@ -109,7 +109,7 @@ module "cluster_irsa" {
   }
 
   role_policy_arns = var.role_policy_arns
-  tags = local.tags
+  tags             = local.tags
   depends_on = [
     module.iam_policy
   ]
@@ -229,11 +229,20 @@ resource "aws_secretsmanager_secret" "cloudquery_secret" {
 }
 
 resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
-  secret_id = aws_secretsmanager_secret.cloudquery_secret.id
-  secret_string = jsonencode({
-    "CQ_VAR_DSN" : "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}",
-  })
+  secret_id     = aws_secretsmanager_secret.cloudquery_secret.id
+  secret_string = "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}"
 }
+
+data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
+  secret_id = aws_secretsmanager_secret.cloudquery_secret.id
+  depends_on = [
+    aws_secretsmanager_secret_version.cloudquery_secret_version
+  ]
+}
+
+# This is to access the secret and put it as an environment variable
+# once cloudquery supports HCP Vault, AWS Secret manager, GCP Secret natively
+# we can remove this. See 
 
 
 module "iam_policy" {
@@ -291,7 +300,7 @@ module "rds" {
   maintenance_window              = "Sun:00:00-Sun:03:00"
   backup_window                   = "03:00-06:00"
   enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  create_cloudwatch_log_group     = true
+  create_cloudwatch_log_group     = false
 
   backup_retention_period = 0
   skip_final_snapshot     = true
