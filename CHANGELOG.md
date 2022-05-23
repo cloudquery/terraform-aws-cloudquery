@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.6.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.5.1...v0.6.0) (2022-05-23)
+
+
+### Features
+
+* Remove PVC and ASCP ([#25](https://github.com/cloudquery/terraform-aws-cloudquery/issues/25)) ([d86ade7](https://github.com/cloudquery/terraform-aws-cloudquery/commit/d86ade7d5aaf78e85f786ba691cf5f528a0a5b04))
+
 ## [0.5.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.5.0...v0.5.1) (2022-04-19)
 
 
