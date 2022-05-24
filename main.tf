@@ -182,31 +182,7 @@ module "eks" {
   vpc_id     = local.vpc_id
   subnet_ids = local.public_subnet_ids
 
-  # EKS Managed Node Group(s)
-  eks_managed_node_group_defaults = {
-    ami_type               = "AL2_x86_64"
-    disk_size              = 100
-    instance_types         = ["m5.large"]
-    vpc_security_group_ids = [module.security_group.security_group_id]
-
-    # We are using the IRSA created below for permissions
-    # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
-    # and then turn this off after the cluster/node group is created. Without this initial policy,
-    # the VPC CNI fails to assign IPs and nodes cannot join the cluster
-    # See https://github.com/aws/containers-roadmap/issues/1666 for more context
-    iam_role_attach_cni_policy = true
-  }
-
   eks_managed_node_groups = {
-    # Default node group - as provided by AWS EKS
-    default_node_group = {
-      # By default, the module creates a launch template to ensure tags are propagated to instances, etc.,
-      # so we need to disable it to use the default template provided by the AWS EKS managed node group service
-      create_launch_template = false
-      launch_template_name   = ""
-      max_size               = 1
-      desired_size           = 1
-    }
 
     # Default node group - as provided by AWS EKS using Bottlerocket
     bottlerocket_default = {
@@ -215,11 +191,18 @@ module "eks" {
       create_launch_template = false
       launch_template_name   = ""
 
-      ami_type = "BOTTLEROCKET_x86_64"
-      platform = "bottlerocket"
+      ami_type       = "BOTTLEROCKET_x86_64"
+      platform       = "bottlerocket"
+      instance_types = ["c5.xlarge"]
+
+      min_size     = 1
+      max_size     = 1
+      desired_size = 1
+
+      capacity_type        = "SPOT"
+      force_update_version = true
     }
   }
-
 }
 
 
