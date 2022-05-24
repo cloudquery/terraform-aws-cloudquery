@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.7.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.6.0...v0.7.0) (2022-05-24)
+
+
+### Features
+
+* Update to spot instances and upgrade helm version ([#26](https://github.com/cloudquery/terraform-aws-cloudquery/issues/26)) ([ef36707](https://github.com/cloudquery/terraform-aws-cloudquery/commit/ef367077b73801a51fb7b4191489e1655cba8bff))
+
 # [0.6.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.5.1...v0.6.0) (2022-05-23)
 
 
