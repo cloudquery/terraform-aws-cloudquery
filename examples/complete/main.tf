@@ -13,5 +13,5 @@ module "cloudquery" {
   name = "cloudquery-complete-example"
 
   config_file = "config.hcl"
-  # install_helm_chart = true
+  # install_helm_chart = false
 }
