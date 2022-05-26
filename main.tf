@@ -234,7 +234,7 @@ resource "aws_secretsmanager_secret" "cloudquery_secret" {
 
 resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
   secret_id     = aws_secretsmanager_secret.cloudquery_secret.id
-  secret_string = "postgres://${module.rds.cluster_master_username}:${module.rds.cluster_master_password}@${module.rds.cluster_endpoint}/postgres"
+  secret_string = "postgres://${module.rds.cluster_master_username}:${random_password.rds.result}@${module.rds.cluster_endpoint}/postgres"
 }
 
 data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
@@ -289,6 +289,10 @@ resource "aws_rds_cluster_parameter_group" "cloudquery" {
   tags        = local.tags
 }
 
+resource "random_password" "rds" {
+  length = 12
+}
+
 module "rds" {
   source  = "terraform-aws-modules/rds-aurora/aws"
   version = "~> 7.1.0"
@@ -300,11 +304,11 @@ module "rds" {
   engine_version = var.postgres_engine_version
   instance_class = var.postgres_instance_class
   instances = {
-    one = {}
+    one = {
+          publicly_accessible = true
+    }
   }
-  # db_name                = "cloudquery"
-  # username               = "cloudquery"
-  # port                   = "5432"
+
 
   performance_insights_enabled = true
   vpc_security_group_ids       = [module.security_group.security_group_id]
@@ -314,7 +318,8 @@ module "rds" {
 
 
   iam_database_authentication_enabled = true
-  create_random_password              = true
+  create_random_password              = false
+  master_password                     = random_password.rds.result
 
   apply_immediately   = true
   skip_final_snapshot = true
