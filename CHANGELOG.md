@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.8.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.7.0...v0.8.0) (2022-05-26)
+
+
+### Features
+
+* Move to RDS aurorra ([#27](https://github.com/cloudquery/terraform-aws-cloudquery/issues/27)) ([3ce17a2](https://github.com/cloudquery/terraform-aws-cloudquery/commit/3ce17a2e9786fe1636e7ed4052f12b7696dd014b))
+
 # [0.7.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.6.0...v0.7.0) (2022-05-24)
 
 
