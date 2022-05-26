@@ -1,7 +1,7 @@
 # RDS
 output "rds_cluster_master_password" {
   description = "Master password for cloudquery rds database"
-  value       = module.rds.db_instance_password
+  value       = module.rds.cluster_master_password
   sensitive   = true
 }
 
@@ -23,8 +23,8 @@ output "irsa_name" {
 }
 
 # CloudQuery
-output "cq_dsn" {
-  description = "CQ_DSN variable for CloudQuery CLI"
-  value       = "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}"
-  sensitive   = true
-}
+# output "cq_dsn" {
+#   description = "CQ_DSN variable for CloudQuery CLI"
+#   value       = "postgres://${module.rds.cluster_master_username}:${module.rds.cluster_master_password}@${module.rds.cluster_endpoint}/${module.rds.cluster_database_name}"
+#   sensitive   = true
+# }

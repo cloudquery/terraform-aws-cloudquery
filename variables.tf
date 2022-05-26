@@ -21,7 +21,7 @@ variable "install_helm_chart" {
 variable "chart_version" {
   description = "The version of CloudQuery helm chart"
   type        = string
-  default     = "0.2.3"
+  default     = "0.2.6"
 }
 
 # variable "chart_version" {
@@ -66,25 +66,20 @@ variable "database_subnet_group" {
 variable "postgres_engine_version" {
   description = "Version of Amazon RDS Postgres engine to use"
   type        = string
-  default     = "14.2"
+  default     = "13.6"
 }
 
 variable "postgres_family" {
   description = "Family of Amazon RDS Postgres engine to use"
   type        = string
-  default     = "postgres14"
+  default     = "aurora-postgresql13"
 }
 
-variable "postgres_major_engine_version" {
-  description = "Major version of Amazon RDS Postgres engine to use"
-  type        = string
-  default     = "14"
-}
 
 variable "postgres_instance_class" {
   description = "Postgresql Instance Class"
   type        = string
-  default     = "db.t4g.large"
+  default     = "db.t3.medium"
 }
 
 # EKS

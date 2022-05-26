@@ -44,24 +44,25 @@ Make sure that both private and public subnets were created in the same set of a
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.5 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.15 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.5 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
-| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 2.5 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.15 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.5 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_cluster_irsa"></a> [cluster\_irsa](#module\_cluster\_irsa) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 4.20 |
+| <a name="module_cluster_irsa_cloudwatch"></a> [cluster\_irsa\_cloudwatch](#module\_cluster\_irsa\_cloudwatch) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 4.20 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 18.17.0 |
 | <a name="module_iam_policy"></a> [iam\_policy](#module\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | ~> 4 |
-| <a name="module_rds"></a> [rds](#module\_rds) | terraform-aws-modules/rds/aws | ~> 4.2.0 |
+| <a name="module_rds"></a> [rds](#module\_rds) | terraform-aws-modules/rds-aurora/aws | ~> 7.1.0 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4.2 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 3.0 |
 
@@ -69,7 +70,9 @@ Make sure that both private and public subnets were created in the same set of a
 
 | Name | Type |
 |------|------|
+| [aws_db_parameter_group.cloudquery](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_parameter_group) | resource |
 | [aws_iam_role_policy_attachment.irsa](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_rds_cluster_parameter_group.cloudquery](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_parameter_group) | resource |
 | [aws_secretsmanager_secret.cloudquery_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret_version.cloudquery_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [helm_release.cloudquery](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
@@ -83,15 +86,14 @@ Make sure that both private and public subnets were created in the same set of a
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_chart_values"></a> [chart\_values](#input\_chart\_values) | Variables to pass to the helm chart | `string` | `""` | no |
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"0.2.3"` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"0.2.6"` | no |
 | <a name="input_config_file"></a> [config\_file](#input\_config\_file) | Path to the CloudQuery config.hcl | `string` | `""` | no |
 | <a name="input_database_subnet_group"></a> [database\_subnet\_group](#input\_database\_subnet\_group) | If vpc\_id is specified, path the subnet\_group name where the RDS should reside | `string` | `""` | no |
 | <a name="input_install_helm_chart"></a> [install\_helm\_chart](#input\_install\_helm\_chart) | Enable/Disable helm chart installation | `bool` | `true` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name to use on all resources created (VPC, RDS, etc) | `string` | `"cloudquery"` | no |
-| <a name="input_postgres_engine_version"></a> [postgres\_engine\_version](#input\_postgres\_engine\_version) | Version of Amazon RDS Postgres engine to use | `string` | `"14.2"` | no |
-| <a name="input_postgres_family"></a> [postgres\_family](#input\_postgres\_family) | Family of Amazon RDS Postgres engine to use | `string` | `"postgres14"` | no |
-| <a name="input_postgres_instance_class"></a> [postgres\_instance\_class](#input\_postgres\_instance\_class) | Postgresql Instance Class | `string` | `"db.t4g.large"` | no |
-| <a name="input_postgres_major_engine_version"></a> [postgres\_major\_engine\_version](#input\_postgres\_major\_engine\_version) | Major version of Amazon RDS Postgres engine to use | `string` | `"14"` | no |
+| <a name="input_postgres_engine_version"></a> [postgres\_engine\_version](#input\_postgres\_engine\_version) | Version of Amazon RDS Postgres engine to use | `string` | `"13.6"` | no |
+| <a name="input_postgres_family"></a> [postgres\_family](#input\_postgres\_family) | Family of Amazon RDS Postgres engine to use | `string` | `"aurora-postgresql13"` | no |
+| <a name="input_postgres_instance_class"></a> [postgres\_instance\_class](#input\_postgres\_instance\_class) | Postgresql Instance Class | `string` | `"db.t3.medium"` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | A list of IDs of existing public subnets inside the VPC | `list(string)` | `[]` | no |
 | <a name="input_role_policy_arns"></a> [role\_policy\_arns](#input\_role\_policy\_arns) | Policies for the role to use for the EKS service account | `list(string)` | <pre>[<br>  "arn:aws:iam::aws:policy/ReadOnlyAccess"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to use on all resources | `map(string)` | `{}` | no |
@@ -101,7 +103,6 @@ Make sure that both private and public subnets were created in the same set of a
 
 | Name | Description |
 |------|-------------|
-| <a name="output_cq_dsn"></a> [cq\_dsn](#output\_cq\_dsn) | CQ\_DSN variable for CloudQuery CLI |
 | <a name="output_irsa_arn"></a> [irsa\_arn](#output\_irsa\_arn) | ARN of IRSA - (IAM Role for service account) |
 | <a name="output_irsa_name"></a> [irsa\_name](#output\_irsa\_name) | Name of IRSA - (IAM Role for service account) |
 | <a name="output_rds_cluster_master_password"></a> [rds\_cluster\_master\_password](#output\_rds\_cluster\_master\_password) | Master password for cloudquery rds database |
