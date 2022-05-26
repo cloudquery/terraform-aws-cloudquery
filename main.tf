@@ -115,17 +115,38 @@ module "cluster_irsa" {
   ]
 }
 
+
 resource "aws_iam_role_policy_attachment" "irsa" {
   role       = module.cluster_irsa.iam_role_name
   policy_arn = module.iam_policy.arn
 }
+
+
+module "cluster_irsa_cloudwatch" {
+  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
+  version = "~> 4.20"
+
+  role_name = "${var.name}-eksa-irsa-cloudwatch"
+
+  oidc_providers = {
+    main = {
+      provider_arn = module.eks.oidc_provider_arn
+      # this expects namespace:service_account_name
+      namespace_service_accounts = ["amazon-cloudwatch:fluent-bit"]
+    }
+  }
+
+  role_policy_arns = ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
+  tags             = local.tags
+}
+
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 18.17.0"
 
   cluster_name                    = var.name
-  cluster_version                 = "1.21"
+  cluster_version                 = "1.22"
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
@@ -213,7 +234,7 @@ resource "aws_secretsmanager_secret" "cloudquery_secret" {
 
 resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
   secret_id     = aws_secretsmanager_secret.cloudquery_secret.id
-  secret_string = "postgres://${module.rds.db_instance_username}:${module.rds.db_instance_password}@${module.rds.db_instance_endpoint}/${module.rds.db_instance_name}"
+  secret_string = "postgres://${module.rds.cluster_master_username}:${module.rds.cluster_master_password}@${module.rds.cluster_endpoint}/postgres"
 }
 
 data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
@@ -254,58 +275,53 @@ EOF
 # RDS
 ######
 
-module "rds" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "~> 4.2.0"
+resource "aws_db_parameter_group" "cloudquery" {
+  name        = "${var.name}-aurora-db-parameter-group"
+  family      = var.postgres_family
+  description = "${var.name}-aurora-db-parameter-group"
+  tags        = local.tags
+}
 
-  identifier = var.name
+resource "aws_rds_cluster_parameter_group" "cloudquery" {
+  name        = "${var.name}-aurora-cluster-parameter-group"
+  family      = var.postgres_family
+  description = "${var.name}-aurora-cluster-parameter-group"
+  tags        = local.tags
+}
+
+module "rds" {
+  source  = "terraform-aws-modules/rds-aurora/aws"
+  version = "~> 7.1.0"
+
+  name = var.name
 
   # All available versions: https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/CHAP_PostgreSQL.html#PostgreSQL.Concepts
-  engine               = "postgres"
-  engine_version       = var.postgres_engine_version
-  family               = var.postgres_family
-  major_engine_version = var.postgres_major_engine_version
-  instance_class       = var.postgres_instance_class
+  engine         = "aurora-postgresql"
+  engine_version = var.postgres_engine_version
+  instance_class = var.postgres_instance_class
+  instances = {
+    one = {}
+  }
+  # db_name                = "cloudquery"
+  # username               = "cloudquery"
+  # port                   = "5432"
 
-  allocated_storage     = 20
-  max_allocated_storage = 100
-
-  db_name                = "cloudquery"
-  username               = "cloudquery"
-  port                   = "5432"
-  create_random_password = true
-
-  multi_az               = true
-  db_subnet_group_name   = local.database_subnet_group
-  vpc_security_group_ids = [module.security_group.security_group_id]
+  performance_insights_enabled = true
+  vpc_security_group_ids       = [module.security_group.security_group_id]
+  vpc_id                       = local.vpc_id
+  db_subnet_group_name         = local.database_subnet_group
+  create_db_subnet_group       = false
 
 
-  maintenance_window              = "Sun:00:00-Sun:03:00"
-  backup_window                   = "03:00-06:00"
-  enabled_cloudwatch_logs_exports = ["postgresql", "upgrade"]
-  create_cloudwatch_log_group     = false
+  iam_database_authentication_enabled = true
+  create_random_password              = true
 
-  backup_retention_period = 0
-  skip_final_snapshot     = true
-  deletion_protection     = false
+  apply_immediately   = true
+  skip_final_snapshot = true
 
-  performance_insights_enabled          = true
-  performance_insights_retention_period = 7
-  create_monitoring_role                = true
-  monitoring_interval                   = 60
-  monitoring_role_name                  = "${var.name}-monitoring"
-  monitoring_role_description           = "Monitoring CloudQuery RDS"
-
-  parameters = [
-    {
-      name  = "autovacuum"
-      value = 1
-    },
-    {
-      name  = "client_encoding"
-      value = "utf8"
-    }
-  ]
+  db_parameter_group_name         = aws_db_parameter_group.cloudquery.id
+  db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.cloudquery.id
+  enabled_cloudwatch_logs_exports = ["postgresql"]
 
   tags = var.tags
 }
