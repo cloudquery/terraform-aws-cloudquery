@@ -48,14 +48,16 @@ module "vpc" {
   # private_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 10)]
   # database_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 20)]
 
-  create_database_subnet_group       = true
-  create_database_subnet_route_table = true
+  create_database_subnet_group           = true
+  create_database_subnet_route_table     = true
+  create_database_internet_gateway_route = var.publicly_accessible
 
   create_egress_only_igw = true
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_iam_role  = true
@@ -305,7 +307,7 @@ module "rds" {
   instance_class = var.postgres_instance_class
   instances = {
     one = {
-          publicly_accessible = true
+      publicly_accessible = var.publicly_accessible
     }
   }
 
@@ -315,13 +317,7 @@ module "rds" {
   db_subnet_group_name         = local.database_subnet_group
   create_db_subnet_group       = false
   create_security_group        = true
-  allowed_cidr_blocks    = ["0.0.0.0/0"]
-  security_group_egress_rules = {
-    to_cidrs = {
-      cidr_blocks = ["0.0.0.0/0"]
-      description = "Egress to all (debugging)"
-    }
-  }
+  allowed_cidr_blocks          = var.allowed_cidr_blocks
 
   iam_database_authentication_enabled = true
   create_random_password              = false
