@@ -75,12 +75,24 @@ variable "postgres_family" {
   default     = "aurora-postgresql13"
 }
 
-
 variable "postgres_instance_class" {
   description = "Postgresql Instance Class"
   type        = string
   default     = "db.t3.medium"
 }
+
+variable "publicly_accessible" {
+  description = "Make RDS publicly accessible (might be needed if you want to connect to it from Grafana or other tools)."
+  type        = bool
+  default     = false
+}
+
+variable "allowed_cidr_blocks" {
+  description = "If RDS is publicly accessible it is highly advised to specify allowed cidrs from where you are planning to connect"
+  type        = list(string)
+  default     = []
+}
+
 
 # EKS
 # role_policy_arns

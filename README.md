@@ -46,6 +46,7 @@ Make sure that both private and public subnets were created in the same set of a
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.15 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.15 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | ~> 2.5 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.2.0 |
 
 ## Providers
 
@@ -53,6 +54,7 @@ Make sure that both private and public subnets were created in the same set of a
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.15 |
 | <a name="provider_helm"></a> [helm](#provider\_helm) | ~> 2.5 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.2.0 |
 
 ## Modules
 
@@ -76,6 +78,7 @@ Make sure that both private and public subnets were created in the same set of a
 | [aws_secretsmanager_secret.cloudquery_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret_version.cloudquery_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [helm_release.cloudquery](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
+| [random_password.rds](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
 | [aws_secretsmanager_secret_version.cloudquery_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
@@ -85,6 +88,7 @@ Make sure that both private and public subnets were created in the same set of a
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_allowed_cidr_blocks"></a> [allowed\_cidr\_blocks](#input\_allowed\_cidr\_blocks) | If RDS is publicly accessible it is highly advised to specify allowed cidrs from where you are planning to connect | `list(string)` | `[]` | no |
 | <a name="input_chart_values"></a> [chart\_values](#input\_chart\_values) | Variables to pass to the helm chart | `string` | `""` | no |
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"0.2.6"` | no |
 | <a name="input_config_file"></a> [config\_file](#input\_config\_file) | Path to the CloudQuery config.hcl | `string` | `""` | no |
@@ -95,6 +99,7 @@ Make sure that both private and public subnets were created in the same set of a
 | <a name="input_postgres_family"></a> [postgres\_family](#input\_postgres\_family) | Family of Amazon RDS Postgres engine to use | `string` | `"aurora-postgresql13"` | no |
 | <a name="input_postgres_instance_class"></a> [postgres\_instance\_class](#input\_postgres\_instance\_class) | Postgresql Instance Class | `string` | `"db.t3.medium"` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | A list of IDs of existing public subnets inside the VPC | `list(string)` | `[]` | no |
+| <a name="input_publicly_accessible"></a> [publicly\_accessible](#input\_publicly\_accessible) | Make RDS publicly accessible (might be needed if you want to connect to it from Grafana or other tools). | `bool` | `false` | no |
 | <a name="input_role_policy_arns"></a> [role\_policy\_arns](#input\_role\_policy\_arns) | Policies for the role to use for the EKS service account | `list(string)` | <pre>[<br>  "arn:aws:iam::aws:policy/ReadOnlyAccess"<br>]</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to use on all resources | `map(string)` | `{}` | no |
 | <a name="input_vpc_id"></a> [vpc\_id](#input\_vpc\_id) | ID of an existing VPC where resources will be created | `string` | `null` | no |

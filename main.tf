@@ -48,14 +48,16 @@ module "vpc" {
   # private_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 10)]
   # database_subnets = [for k, v in slice(data.aws_availability_zones.available.names, 0, 2) : cidrsubnet(local.cidr, 8, k + 20)]
 
-  create_database_subnet_group       = true
-  create_database_subnet_route_table = true
+  create_database_subnet_group           = true
+  create_database_subnet_route_table     = true
+  create_database_internet_gateway_route = var.publicly_accessible
 
   create_egress_only_igw = true
 
   enable_nat_gateway   = true
   single_nat_gateway   = true
   enable_dns_hostnames = true
+  enable_dns_support   = true
 
   enable_flow_log                      = true
   create_flow_log_cloudwatch_iam_role  = true
@@ -234,7 +236,7 @@ resource "aws_secretsmanager_secret" "cloudquery_secret" {
 
 resource "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
   secret_id     = aws_secretsmanager_secret.cloudquery_secret.id
-  secret_string = "postgres://${module.rds.cluster_master_username}:${module.rds.cluster_master_password}@${module.rds.cluster_endpoint}/postgres"
+  secret_string = "postgres://${module.rds.cluster_master_username}:${random_password.rds.result}@${module.rds.cluster_endpoint}/postgres"
 }
 
 data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
@@ -289,6 +291,10 @@ resource "aws_rds_cluster_parameter_group" "cloudquery" {
   tags        = local.tags
 }
 
+resource "random_password" "rds" {
+  length = 12
+}
+
 module "rds" {
   source  = "terraform-aws-modules/rds-aurora/aws"
   version = "~> 7.1.0"
@@ -300,21 +306,22 @@ module "rds" {
   engine_version = var.postgres_engine_version
   instance_class = var.postgres_instance_class
   instances = {
-    one = {}
+    one = {
+      publicly_accessible = var.publicly_accessible
+    }
   }
-  # db_name                = "cloudquery"
-  # username               = "cloudquery"
-  # port                   = "5432"
 
   performance_insights_enabled = true
   vpc_security_group_ids       = [module.security_group.security_group_id]
   vpc_id                       = local.vpc_id
   db_subnet_group_name         = local.database_subnet_group
   create_db_subnet_group       = false
-
+  create_security_group        = true
+  allowed_cidr_blocks          = var.allowed_cidr_blocks
 
   iam_database_authentication_enabled = true
-  create_random_password              = true
+  create_random_password              = false
+  master_password                     = random_password.rds.result
 
   apply_immediately   = true
   skip_final_snapshot = true
