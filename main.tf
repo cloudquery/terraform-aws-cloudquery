@@ -309,13 +309,19 @@ module "rds" {
     }
   }
 
-
   performance_insights_enabled = true
   vpc_security_group_ids       = [module.security_group.security_group_id]
   vpc_id                       = local.vpc_id
   db_subnet_group_name         = local.database_subnet_group
   create_db_subnet_group       = false
-
+  create_security_group        = true
+  allowed_cidr_blocks    = ["0.0.0.0/0"]
+  security_group_egress_rules = {
+    to_cidrs = {
+      cidr_blocks = ["0.0.0.0/0"]
+      description = "Egress to all (debugging)"
+    }
+  }
 
   iam_database_authentication_enabled = true
   create_random_password              = false
