@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.9.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.9.0...v0.9.1) (2022-05-28)
+
+
+### Bug Fixes
+
+* Update Random provider version and special chars ([#29](https://github.com/cloudquery/terraform-aws-cloudquery/issues/29)) ([a1480d6](https://github.com/cloudquery/terraform-aws-cloudquery/commit/a1480d6ddb8dc3d89d292fdcd48224a405c8e0df))
+
 # [0.9.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.8.0...v0.9.0) (2022-05-27)
 
 
