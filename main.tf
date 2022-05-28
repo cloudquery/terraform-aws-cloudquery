@@ -292,7 +292,8 @@ resource "aws_rds_cluster_parameter_group" "cloudquery" {
 }
 
 resource "random_password" "rds" {
-  length = 12
+  length  = 14
+  special = false
 }
 
 module "rds" {
