@@ -6,7 +6,7 @@ The configuration in this directory create complete setup of CloudQuery on top o
 
 ```
 terraform init
-terraform plan
+terraform apply
 aws --region us-east-1 eks update-kubeconfig --name cloudquery-complete-example
 # This should print helpers from the helm
 helm get notes cloudquery-complete-example --namespace cloudquery
