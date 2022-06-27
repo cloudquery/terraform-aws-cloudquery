@@ -148,7 +148,7 @@ module "eks" {
   version = "~> 18.17.0"
 
   cluster_name                    = var.name
-  cluster_version                 = "1.22"
+  cluster_version                 = var.cluster_version
   cluster_endpoint_private_access = true
   cluster_endpoint_public_access  = true
 
@@ -248,7 +248,7 @@ data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
 
 # This is to access the secret and put it as an environment variable
 # once cloudquery supports HCP Vault, AWS Secret manager, GCP Secret natively
-# we can remove this. See 
+# we can remove this. See
 
 
 module "iam_policy" {

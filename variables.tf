@@ -10,8 +10,9 @@ variable "tags" {
   default     = {}
 }
 
-# Helm
-
+#---------------------------------------------------
+# HELM
+#---------------------------------------------------
 variable "install_helm_chart" {
   description = "Enable/Disable helm chart installation"
   type        = bool
@@ -36,8 +37,9 @@ variable "chart_values" {
   default     = ""
 }
 
-
+#---------------------------------------------------
 # VPC
+#---------------------------------------------------
 variable "vpc_id" {
   description = "ID of an existing VPC where resources will be created"
   type        = string
@@ -56,7 +58,9 @@ variable "database_subnet_group" {
   default     = ""
 }
 
+#---------------------------------------------------
 # RDS
+#---------------------------------------------------
 variable "postgres_engine_version" {
   description = "Version of Amazon RDS Postgres engine to use"
   type        = string
@@ -88,8 +92,19 @@ variable "allowed_cidr_blocks" {
 }
 
 
+#---------------------------------------------------
 # EKS
+#---------------------------------------------------
+
+variable "cluster_version" {
+  description = "Kubernetes `<major>.<minor>` version to use for the EKS cluster (i.e.: `1.21`)"
+  type        = string
+  default     = "1.22"
+}
+
+#---------------------------------------------------
 # role_policy_arns
+#---------------------------------------------------
 variable "role_policy_arns" {
   description = "Policies for the role to use for the EKS service account"
   type        = list(string)
