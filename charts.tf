@@ -2,6 +2,8 @@ data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
 
+data "aws_region" "current" {}
+
 provider "helm" {
   kubernetes {
     host                   = module.eks.cluster_endpoint
@@ -27,6 +29,11 @@ serviceAccount:
     "eks.amazonaws.com/role-arn": ${module.cluster_irsa.iam_role_arn}
 envRenderSecret:
   "CQ_VAR_DSN": "${data.aws_secretsmanager_secret_version.cloudquery_secret_version.secret_string}"
+cloudwatch:
+  enabled: ${var.cloudwatch_logs}
+  cluster_name: ${var.name}
+  region: ${data.aws_region.current.name}
+  role_arn: ${module.cluster_irsa_cloudwatch.iam_role_arn}
 config: |
   ${indent(2, file(var.config_file))}
 EOT

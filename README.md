@@ -81,6 +81,7 @@ Make sure that both private and public subnets were created in the same set of a
 | [random_password.rds](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 | [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_cluster_auth) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 | [aws_secretsmanager_secret_version.cloudquery_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) | data source |
 | [aws_vpc.cq_vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/vpc) | data source |
 
@@ -91,6 +92,7 @@ Make sure that both private and public subnets were created in the same set of a
 | <a name="input_allowed_cidr_blocks"></a> [allowed\_cidr\_blocks](#input\_allowed\_cidr\_blocks) | If RDS is publicly accessible it is highly advised to specify allowed cidrs from where you are planning to connect | `list(string)` | `[]` | no |
 | <a name="input_chart_values"></a> [chart\_values](#input\_chart\_values) | Variables to pass to the helm chart | `string` | `""` | no |
 | <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"0.2.7"` | no |
+| <a name="input_cloudwatch_logs"></a> [cloudwatch\_logs](#input\_cloudwatch\_logs) | Enable/Disable CloudWatch Logs FluentBit integration | `bool` | `true` | no |
 | <a name="input_config_file"></a> [config\_file](#input\_config\_file) | Path to the CloudQuery config.hcl | `string` | `""` | no |
 | <a name="input_database_subnet_group"></a> [database\_subnet\_group](#input\_database\_subnet\_group) | If vpc\_id is specified, path the subnet\_group name where the RDS should reside | `string` | `""` | no |
 | <a name="input_install_helm_chart"></a> [install\_helm\_chart](#input\_install\_helm\_chart) | Enable/Disable helm chart installation | `bool` | `true` | no |
