@@ -97,3 +97,10 @@ variable "role_policy_arns" {
     "arn:aws:iam::aws:policy/ReadOnlyAccess"
   ]
 }
+
+# CloudWatch Logs
+variable "cloudwatch_logs" {
+  description = "Enable/Disable CloudWatch Logs FluentBit integration"
+  type        = bool
+  default     = true
+}
