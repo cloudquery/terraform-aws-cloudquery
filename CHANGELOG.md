@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.10.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.9.1...v0.10.0) (2022-06-29)
+
+
+### Features
+
+* Enable Cloudwatch Logs Fluentbit integration ([#33](https://github.com/cloudquery/terraform-aws-cloudquery/issues/33)) ([3aedf2e](https://github.com/cloudquery/terraform-aws-cloudquery/commit/3aedf2e7abad2e07c430924d81db8c8c699d004d))
+
 ## [0.9.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.9.0...v0.9.1) (2022-05-28)
 
 
