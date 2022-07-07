@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.10.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.10.0...v0.10.1) (2022-07-07)
+
+
+### Bug Fixes
+
+* **deps:** Update actions/checkout action to v3 ([#46](https://github.com/cloudquery/terraform-aws-cloudquery/issues/46)) ([4498958](https://github.com/cloudquery/terraform-aws-cloudquery/commit/4498958a7da441a8430e4ca4517732a6835b4a27))
+* **deps:** Update amannn/action-semantic-pull-request action to v3.7.0 ([#43](https://github.com/cloudquery/terraform-aws-cloudquery/issues/43)) ([e2d06c1](https://github.com/cloudquery/terraform-aws-cloudquery/commit/e2d06c1cb64fd42d58e3cfc386af5f419c3926fb))
+* **deps:** Update amannn/action-semantic-pull-request action to v4 ([#47](https://github.com/cloudquery/terraform-aws-cloudquery/issues/47)) ([a361864](https://github.com/cloudquery/terraform-aws-cloudquery/commit/a36186452ae5572fb14db7ec9f419edd5b40d71c))
+* **deps:** Update clowdhaus/terraform-composite-actions action to v1.5.0 ([#44](https://github.com/cloudquery/terraform-aws-cloudquery/issues/44)) ([fa5ef43](https://github.com/cloudquery/terraform-aws-cloudquery/commit/fa5ef432ed4029e5765f1cbf20f883d7d88d0b66))
+* **deps:** Update clowdhaus/terraform-min-max action to v1.0.8 ([#40](https://github.com/cloudquery/terraform-aws-cloudquery/issues/40)) ([f18d7e7](https://github.com/cloudquery/terraform-aws-cloudquery/commit/f18d7e7001467eb4e4637c4dd2ee2b1b280fd164))
+* **deps:** Update dependency cloudquery/helm-charts to v0.2.8 ([#49](https://github.com/cloudquery/terraform-aws-cloudquery/issues/49)) ([2356e23](https://github.com/cloudquery/terraform-aws-cloudquery/commit/2356e23f43d7d4bdb139583fabe494524ebdbd0e))
+
 # [0.10.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.9.1...v0.10.0) (2022-06-29)
 
 
