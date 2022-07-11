@@ -23,6 +23,7 @@ resource "helm_release" "cloudquery" {
   wait             = true
   values = [
     <<EOT
+cqInstallSrc: TERRAFORM_HELM
 serviceAccount:
   enabled: true
   annotations:
