@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.11.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.10.1...v0.11.0) (2022-07-11)
+
+
+### Features
+
+* Change config from hcl to yml ([#50](https://github.com/cloudquery/terraform-aws-cloudquery/issues/50)) ([820f38b](https://github.com/cloudquery/terraform-aws-cloudquery/commit/820f38bdc50b996ec0f92cd9b9336f47005176b4))
+
 ## [0.10.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.10.0...v0.10.1) (2022-07-07)
 
 
