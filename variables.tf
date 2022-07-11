@@ -25,7 +25,7 @@ variable "chart_version" {
 }
 
 variable "config_file" {
-  description = "Path to the CloudQuery config.hcl"
+  description = "Path to the CloudQuery config.yml"
   type        = string
   default     = ""
 }

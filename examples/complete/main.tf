@@ -12,7 +12,7 @@ module "cloudquery" {
   # Name to use on all resources created (VPC, RDS, etc)
   name = "cloudquery-complete-example"
 
-  config_file = "config.hcl"
+  config_file = "config.yml"
   #  allowed_cidr_blocks = ["0.0.0.0/0"]
   #  publicly_accessible = true
   #  install_helm_chart = false
