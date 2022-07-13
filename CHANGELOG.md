@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.12.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.11.4...v0.12.0) (2022-07-13)
+
+
+### Features
+
+* Define cq install src env var ([#53](https://github.com/cloudquery/terraform-aws-cloudquery/issues/53)) ([196a9e2](https://github.com/cloudquery/terraform-aws-cloudquery/commit/196a9e2821f6085a54bdd5fb353b3452ec4663ae))
+
 ## [0.11.4](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.11.3...v0.11.4) (2022-07-12)
 
 
