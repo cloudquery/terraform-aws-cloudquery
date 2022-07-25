@@ -145,7 +145,7 @@ module "cluster_irsa_cloudwatch" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 18.17.0"
+  version = "~> 18.26.0"
 
   cluster_name                    = var.name
   cluster_version                 = "1.22"
