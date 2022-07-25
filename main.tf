@@ -298,7 +298,7 @@ resource "random_password" "rds" {
 
 module "rds" {
   source  = "terraform-aws-modules/rds-aurora/aws"
-  version = "~> 7.1.0"
+  version = "~> 7.2.0"
 
   name = var.name
 
