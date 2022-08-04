@@ -1,8 +1,24 @@
+locals {
+  values = [
+    <<EOT
+cqInstallSrc: TERRAFORM_HELM
+serviceAccount:
+  enabled: true
+  annotations:
+    "eks.amazonaws.com/role-arn": ${module.cluster_irsa.iam_role_arn}
+envRenderSecret:
+  "CQ_VAR_DSN": "${data.aws_secretsmanager_secret_version.cloudquery_secret_version.secret_string}"
+config: |
+  ${indent(2, file(var.config_file))}
+EOT
+    ,
+    var.chart_values
+  ]
+}
+
 data "aws_eks_cluster_auth" "cluster" {
   name = module.eks.cluster_id
 }
-
-data "aws_region" "current" {}
 
 provider "helm" {
   kubernetes {
@@ -21,26 +37,7 @@ resource "helm_release" "cloudquery" {
   version          = var.chart_version
   create_namespace = true
   wait             = true
-  values = [
-    <<EOT
-cqInstallSrc: TERRAFORM_HELM
-serviceAccount:
-  enabled: true
-  annotations:
-    "eks.amazonaws.com/role-arn": ${module.cluster_irsa.iam_role_arn}
-envRenderSecret:
-  "CQ_VAR_DSN": "${data.aws_secretsmanager_secret_version.cloudquery_secret_version.secret_string}"
-cloudwatch:
-  enabled: ${var.cloudwatch_logs}
-  cluster_name: ${var.name}
-  region: ${data.aws_region.current.name}
-  role_arn: ${module.cluster_irsa_cloudwatch.iam_role_arn}
-config: |
-  ${indent(2, file(var.config_file))}
-EOT
-    ,
-    var.chart_values
-  ]
+  values           = local.values
 
   depends_on = [
     module.eks.cluster_id,

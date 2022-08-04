@@ -124,25 +124,6 @@ resource "aws_iam_role_policy_attachment" "irsa" {
 }
 
 
-module "cluster_irsa_cloudwatch" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 4.20"
-
-  role_name = "${var.name}-eksa-irsa-cloudwatch"
-
-  oidc_providers = {
-    main = {
-      provider_arn = module.eks.oidc_provider_arn
-      # this expects namespace:service_account_name
-      namespace_service_accounts = ["amazon-cloudwatch:fluent-bit"]
-    }
-  }
-
-  role_policy_arns = ["arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"]
-  tags             = local.tags
-}
-
-
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 18.17.0"
@@ -248,7 +229,7 @@ data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
 
 # This is to access the secret and put it as an environment variable
 # once cloudquery supports HCP Vault, AWS Secret manager, GCP Secret natively
-# we can remove this. See 
+# we can remove this. See
 
 
 module "iam_policy" {
