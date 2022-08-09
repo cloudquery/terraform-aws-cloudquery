@@ -22,6 +22,11 @@ output "irsa_name" {
   value       = module.cluster_irsa.iam_role_name
 }
 
+output "helm_values" {
+  description = "Helm values for the cluster"
+  value       = join("\n", local.values)
+}
+
 # CloudQuery
 # output "cq_dsn" {
 #   description = "CQ_DSN variable for CloudQuery CLI"
