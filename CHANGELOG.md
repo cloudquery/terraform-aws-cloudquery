@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+# [0.13.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.12.2...v0.13.0) (2022-08-09)
+
+
+### Features
+
+* Drop CloudWatch Logs ([#60](https://github.com/cloudquery/terraform-aws-cloudquery/issues/60)) ([ab10fc4](https://github.com/cloudquery/terraform-aws-cloudquery/commit/ab10fc4847a8a4f0d739de3a392608bed16ecc74))
+
 ## [0.12.2](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.12.1...v0.12.2) (2022-08-01)
 
 
