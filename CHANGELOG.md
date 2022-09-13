@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.1](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.13.0...v0.13.1) (2022-09-13)
+
+
+### Bug Fixes
+
+* **deps:** Update clowdhaus/terraform-composite-actions action to v1.6.0 ([#57](https://github.com/cloudquery/terraform-aws-cloudquery/issues/57)) ([66abc4e](https://github.com/cloudquery/terraform-aws-cloudquery/commit/66abc4e8d8ff621df50443f1762b7561d6d75644))
+* **deps:** Update clowdhaus/terraform-min-max action to v1.1.1 ([#58](https://github.com/cloudquery/terraform-aws-cloudquery/issues/58)) ([b24ee55](https://github.com/cloudquery/terraform-aws-cloudquery/commit/b24ee554b6b9c2f2998f3f7800c7aa65d24882c4))
+* **deps:** Update Terraform terraform-aws-modules/eks/aws to ~> 18.29.0 ([#41](https://github.com/cloudquery/terraform-aws-cloudquery/issues/41)) ([b8d99ae](https://github.com/cloudquery/terraform-aws-cloudquery/commit/b8d99ae9996db798895a47c40d6e02f3b70d5737))
+
 # [0.13.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.12.2...v0.13.0) (2022-08-09)
 
 
