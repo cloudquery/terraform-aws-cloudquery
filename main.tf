@@ -98,7 +98,7 @@ module "security_group" {
 
 module "cluster_irsa" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks"
-  version = "~> 4.20"
+  version = "~> 5.0"
 
   role_name = "${var.name}-eksa-irsa"
 
@@ -234,7 +234,7 @@ data "aws_secretsmanager_secret_version" "cloudquery_secret_version" {
 
 module "iam_policy" {
   source  = "terraform-aws-modules/iam/aws//modules/iam-policy"
-  version = "~> 4"
+  version = "~> 5.3.0"
 
   name        = "${var.name}-secretsmanager"
   path        = "/"
