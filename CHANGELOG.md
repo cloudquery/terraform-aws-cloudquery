@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.4](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.13.3...v0.13.4) (2022-10-02)
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-aws-modules/eks/aws to ~> 18.30.0 ([#70](https://github.com/cloudquery/terraform-aws-cloudquery/issues/70)) ([17dbccc](https://github.com/cloudquery/terraform-aws-cloudquery/commit/17dbccc39aaca71771991a5f07e8de913359494a))
+
 ## [0.13.3](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.13.2...v0.13.3) (2022-09-28)
 
 
