@@ -2,7 +2,7 @@
 
 This folder contains a Terraform module to deploy a CloudQuery cluster in AWS on top of EKS.
 
-## Usage 
+## Usage
 
 Examples are included in the example folder, but simple usage is as follows:
 
@@ -18,10 +18,10 @@ module "cloudquery" {
   public_subnets  = ["10.20.1.0/24", "10.20.2.0/24", "10.20.3.0/24"]
   private_subnets = ["10.20.101.0/24", "10.20.102.0/24", "10.20.103.0/24"]
   database_subnets = ["10.10.21.0/24", "10.10.22.0/24"]
-  
+
   # path to your cloudquery config
   config_file = "config.yml"
-  
+
 }
 ```
 
@@ -29,12 +29,11 @@ module "cloudquery" {
 
 This way allows integration with your existing AWS resources - VPC, public and private subnets. Specify the following arguments (see methods described above):
 
-
 If vpc_id is specified it will take precedence over cidr and existing VPC will be used.
 
 Make sure that both private and public subnets were created in the same set of availability zones.
 
-### Run Helm Seperately
+### Run Helm Separately
 
 ## Examples
 
@@ -63,7 +62,7 @@ Make sure that both private and public subnets were created in the same set of a
 | <a name="module_cluster_irsa"></a> [cluster\_irsa](#module\_cluster\_irsa) | terraform-aws-modules/iam/aws//modules/iam-role-for-service-accounts-eks | ~> 4.20 |
 | <a name="module_eks"></a> [eks](#module\_eks) | terraform-aws-modules/eks/aws | ~> 18.30.0 |
 | <a name="module_iam_policy"></a> [iam\_policy](#module\_iam\_policy) | terraform-aws-modules/iam/aws//modules/iam-policy | ~> 4 |
-| <a name="module_rds"></a> [rds](#module\_rds) | terraform-aws-modules/rds-aurora/aws | ~> 7.1.0 |
+| <a name="module_rds"></a> [rds](#module\_rds) | terraform-aws-modules/rds-aurora/aws | ~> 7.5.0 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4.2 |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | ~> 3.0 |
 
@@ -89,7 +88,7 @@ Make sure that both private and public subnets were created in the same set of a
 |------|-------------|------|---------|:--------:|
 | <a name="input_allowed_cidr_blocks"></a> [allowed\_cidr\_blocks](#input\_allowed\_cidr\_blocks) | If RDS is publicly accessible it is highly advised to specify allowed cidrs from where you are planning to connect | `list(string)` | `[]` | no |
 | <a name="input_chart_values"></a> [chart\_values](#input\_chart\_values) | Variables to pass to the helm chart | `string` | `""` | no |
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"0.3.3"` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"1.0.5"` | no |
 | <a name="input_config_file"></a> [config\_file](#input\_config\_file) | Path to the CloudQuery config.yml | `string` | `""` | no |
 | <a name="input_database_subnet_group"></a> [database\_subnet\_group](#input\_database\_subnet\_group) | If vpc\_id is specified, path the subnet\_group name where the RDS should reside | `string` | `""` | no |
 | <a name="input_install_helm_chart"></a> [install\_helm\_chart](#input\_install\_helm\_chart) | Enable/Disable helm chart installation | `bool` | `true` | no |
