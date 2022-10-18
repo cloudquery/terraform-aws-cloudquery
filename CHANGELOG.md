@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.13.7](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.13.6...v0.13.7) (2022-10-18)
+
+
+### Bug Fixes
+
+* **deps:** Update Terraform terraform-aws-modules/rds-aurora/aws to ~> 7.5.0 ([#73](https://github.com/cloudquery/terraform-aws-cloudquery/issues/73)) ([1955e2a](https://github.com/cloudquery/terraform-aws-cloudquery/commit/1955e2a24a448cd16406111fd79f8fe08ab3f609))
+
 ## [0.13.6](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v0.13.5...v0.13.6) (2022-10-13)
 
 
