@@ -4,7 +4,7 @@ The configuration in this directory create complete setup of CloudQuery on top o
 
 ## Usage
 
-```
+```bash
 terraform init
 terraform apply
 aws --region us-east-1 eks update-kubeconfig --name cloudquery-complete-example

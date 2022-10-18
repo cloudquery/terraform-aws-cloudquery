@@ -7,7 +7,7 @@ serviceAccount:
   annotations:
     "eks.amazonaws.com/role-arn": ${module.cluster_irsa.iam_role_arn}
 envRenderSecret:
-  "CQ_VAR_DSN": "${data.aws_secretsmanager_secret_version.cloudquery_secret_version.secret_string}"
+  "CQ_DSN": "${data.aws_secretsmanager_secret_version.cloudquery_secret_version.secret_string}"
 config: |
   ${indent(2, file(var.config_file))}
 EOT
