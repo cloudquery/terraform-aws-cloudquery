@@ -87,6 +87,7 @@ jobs:
           commit_message: "chore: Add pre-commit changes"
       - name: Pre-commit Terraform ${{ steps.minMax.outputs.maxVersion }}
         uses: clowdhaus/terraform-composite-actions/pre-commit@v1.6.0
+        if: github.actor != 'cq-bot'
         with:
           terraform-version: ${{ steps.minMax.outputs.maxVersion }}
           terraform-docs-version: v0.16.0
