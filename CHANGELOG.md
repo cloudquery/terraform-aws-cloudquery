@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+# [2.0.0](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v1.0.7...v2.0.0) (2022-11-02)
+
+
+### chore
+
+* **deps:** Update github-actions ([#88](https://github.com/cloudquery/terraform-aws-cloudquery/issues/88)) ([f58517c](https://github.com/cloudquery/terraform-aws-cloudquery/commit/f58517cebac9544827080a3e53e46dc3df8e5661))
+
+
+### BREAKING CHANGES
+
+* **deps:** Require Terraform 1.0
+
 ## [1.0.7](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v1.0.6...v1.0.7) (2022-11-02)
 
 
