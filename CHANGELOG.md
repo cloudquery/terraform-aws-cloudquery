@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.7](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v1.0.6...v1.0.7) (2022-11-02)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery/cloudquery to v1.6.0 ([#91](https://github.com/cloudquery/terraform-aws-cloudquery/issues/91)) ([c773182](https://github.com/cloudquery/terraform-aws-cloudquery/commit/c773182a05c07a132d77684d6e38d90d823d8ca3))
+* **deps:** Update dependency cloudquery/cloudquery to v4 ([#92](https://github.com/cloudquery/terraform-aws-cloudquery/issues/92)) ([09c70a5](https://github.com/cloudquery/terraform-aws-cloudquery/commit/09c70a550ce87e97798d16e6b58f8c46b9b0a99c))
+
 ## [1.0.6](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v1.0.5...v1.0.6) (2022-11-01)
 
 
