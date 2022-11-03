@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0.5](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v2.0.4...v2.0.5) (2022-11-03)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery/cloudquery to v4.5.0 ([#102](https://github.com/cloudquery/terraform-aws-cloudquery/issues/102)) ([cbd8f03](https://github.com/cloudquery/terraform-aws-cloudquery/commit/cbd8f03c748ea9a14a95847e2f15f602812f1c4f))
+* **deps:** Update dependency cloudquery/helm-charts to v1.0.26 ([#103](https://github.com/cloudquery/terraform-aws-cloudquery/issues/103)) ([1e3ec75](https://github.com/cloudquery/terraform-aws-cloudquery/commit/1e3ec7571f2d2ba953785dee6b497d2e10333414))
+
 ## [2.0.4](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v2.0.3...v2.0.4) (2022-11-03)
 
 
