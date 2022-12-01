@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file.
 
+## [6.0.13](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v6.0.12...v6.0.13) (2022-12-01)
+
+
+### Bug Fixes
+
+* **deps:** Update dependency cloudquery/helm-charts to v5.1.12 ([#202](https://github.com/cloudquery/terraform-aws-cloudquery/issues/202)) ([6cc3dfe](https://github.com/cloudquery/terraform-aws-cloudquery/commit/6cc3dfe7dac46553332c640889624aa21040bb7b))
+
 ## [6.0.12](https://github.com/cloudquery/terraform-aws-cloudquery/compare/v6.0.11...v6.0.12) (2022-12-01)
 
 
