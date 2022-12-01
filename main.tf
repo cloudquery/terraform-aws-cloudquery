@@ -126,7 +126,7 @@ resource "aws_iam_role_policy_attachment" "irsa" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "~> 18.30.0"
+  version = "~> 18.31.0"
 
   cluster_name                    = var.name
   cluster_version                 = "1.22"
