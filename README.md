@@ -88,7 +88,7 @@ Make sure that both private and public subnets were created in the same set of a
 |------|-------------|------|---------|:--------:|
 | <a name="input_allowed_cidr_blocks"></a> [allowed\_cidr\_blocks](#input\_allowed\_cidr\_blocks) | If RDS is publicly accessible it is highly advised to specify allowed cidrs from where you are planning to connect | `list(string)` | `[]` | no |
 | <a name="input_chart_values"></a> [chart\_values](#input\_chart\_values) | Variables to pass to the helm chart | `string` | `""` | no |
-| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"13.0.1"` | no |
+| <a name="input_chart_version"></a> [chart\_version](#input\_chart\_version) | The version of CloudQuery helm chart | `string` | `"13.0.3"` | no |
 | <a name="input_config_file"></a> [config\_file](#input\_config\_file) | Path to the CloudQuery config.yml | `string` | `""` | no |
 | <a name="input_database_subnet_group"></a> [database\_subnet\_group](#input\_database\_subnet\_group) | If vpc\_id is specified, path the subnet\_group name where the RDS should reside | `string` | `""` | no |
 | <a name="input_install_helm_chart"></a> [install\_helm\_chart](#input\_install\_helm\_chart) | Enable/Disable helm chart installation | `bool` | `true` | no |
