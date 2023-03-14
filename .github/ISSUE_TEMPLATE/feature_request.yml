@@ -1,0 +1,35 @@
+name: 🚀 Feature request
+description: Suggest an idea for this project
+title: 'feat: <title>'
+labels: ['enhancement']
+body:
+  - type: checkboxes
+    attributes:
+      label: Are you positive this feature should be implemented in the CloudQuery Terraform AWS Module bug?
+      description: Most features should be requested on the [main repository](https://github.com/cloudquery/cloudquery). If you are not sure, please open an issue there first.
+      options:
+        - label: I'm positive this is a CloudQuery Terraform AWS Module feature
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Which problem is this feature request solving?
+      placeholder: I would like to [...]
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Describe the solution you'd like
+      placeholder: This could be resolved by [...]
+    validations:
+      required: true
+
+  - type: checkboxes
+    attributes:
+      label: Pull request (optional)
+      description:
+        Pull requests welcome! If you would like to help us implement this feature, please check our [contributions guidelines](../blob/main/CONTRIBUTING.md)
+      options:
+        - label: I can submit a pull request
+          required: false
