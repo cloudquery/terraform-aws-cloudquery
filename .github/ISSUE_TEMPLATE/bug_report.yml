@@ -1,0 +1,55 @@
+name: 🐛 Bug Report
+description: If something isn't working as expected 🤔
+title: "bug: <title>"
+labels: [bug, needs-triage]
+body:
+  - type: checkboxes
+    attributes:
+      label: Are you positive this is a CloudQuery Terraform AWS Module bug?
+      description: Most bugs should be open on the [main repository](https://github.com/cloudquery/cloudquery). If you are not sure, please open an issue there first.
+      options:
+        - label: I'm positive this is a CloudQuery Terraform AWS Module bug
+          required: true
+
+  - type: textarea
+    attributes:
+      label: Current Behavior
+      description: A concise description of what you're experiencing
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A concise description of what you expected to happen
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Terraform (redacted) configuration
+      description: Please provide your Terraform configuration, redacted of any sensitive information
+      placeholder: |
+        ```hcl
+        <config-content>
+        ```
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional Context
+      description: |
+        Add any other context the bug, such as links to related PRs or issues
+    validations:
+      required: false
+
+  - type: checkboxes
+    attributes:
+      label: Pull request (optional)
+      description: |
+        Pull requests welcome! If you would like to help us fix this bug, please check our [contributions guidelines](../blob/main/CONTRIBUTING.md)
+      options:
+        - label: I can submit a pull request
+          required: false
