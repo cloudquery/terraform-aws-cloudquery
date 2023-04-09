@@ -21,7 +21,7 @@ variable "install_helm_chart" {
 variable "chart_version" {
   description = "The version of CloudQuery helm chart"
   type        = string
-  default     = "15.0.7" # Do not change CloudQuery helm chart version as it is automatically updated by Workflow
+  default     = "16.0.0" # Do not change CloudQuery helm chart version as it is automatically updated by Workflow
 }
 
 variable "config_file" {
