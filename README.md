@@ -1,3 +1,5 @@
+Note: This is not officially maintained right now and mostly serves as an example. If you are looking for an official k8s helm chart take a look [here](https://github.com/cloudquery/helm-charts).
+
 # CloudQuery AWS Module
 
 This folder contains a Terraform module to deploy a CloudQuery cluster in AWS on top of EKS.
